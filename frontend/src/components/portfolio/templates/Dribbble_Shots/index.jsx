@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, MessageCircle, Share2, ExternalLink, Github, Mail, MapPin, Briefcase, Award, Code, Palette, Terminal, Search } from 'lucide-react';
 import data from '../../../../data/dummy_data.json';
@@ -6,6 +6,9 @@ import data from '../../../../data/dummy_data.json';
 // --- Sub-components ---
 
 const DribbbleShot = ({ image, title, description, techStack, liveUrl, githubUrl }) => {
+  const likes = useMemo(() => Math.floor(Math.random() * 500) + 50, []);
+  const comments = useMemo(() => Math.floor(Math.random() * 50) + 5, []);
+
   return (
     <div className="group relative flex flex-col w-full bg-white rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
       {/* Image Container */}
@@ -45,10 +48,10 @@ const DribbbleShot = ({ image, title, description, techStack, liveUrl, githubUrl
         </div>
         <div className="flex items-center gap-3 text-gray-400 text-xs font-semibold">
           <div className="flex items-center gap-1 hover:text-pink-500 cursor-pointer transition-colors">
-            <Heart className="w-4 h-4" /> {Math.floor(Math.random() * 500) + 50}
+            <Heart className="w-4 h-4" /> {likes}
           </div>
           <div className="flex items-center gap-1 hover:text-gray-600 cursor-pointer transition-colors">
-            <MessageCircle className="w-4 h-4" /> {Math.floor(Math.random() * 50) + 5}
+            <MessageCircle className="w-4 h-4" /> {comments}
           </div>
         </div>
       </div>
