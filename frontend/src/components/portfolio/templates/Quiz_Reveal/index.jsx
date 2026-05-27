@@ -79,7 +79,7 @@ const safeArray = (value) => (Array.isArray(value) ? value : []);
 
 function GlassPanel({ children, className = '' }) {
   return (
-    <div className={`rounded-[1.75rem] border border-white/10 bg-white/[0.06] shadow-2xl shadow-cyan-950/30 backdrop-blur-xl ${className}`}>
+    <div className={`w-full max-w-full rounded-2xl border border-white/10 bg-white/[0.06] shadow-2xl shadow-cyan-950/30 backdrop-blur-xl sm:rounded-[1.75rem] ${className}`}>
       {children}
     </div>
   );
@@ -97,16 +97,22 @@ function ProgressTracker({ unlockedCount, activeQuestion, totalQuestions }) {
   const progress = Math.round(((unlockedCount - 1) / totalQuestions) * 100);
 
   return (
-    <GlassPanel className="sticky top-4 z-30 p-4">
+    <GlassPanel className="z-30 p-3 sm:sticky sm:top-4 sm:p-4">
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div>
-          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.24em] text-cyan-200">
+        <div className="flex items-center justify-between gap-3 lg:block">
+          <div>
+            <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-cyan-200 sm:text-xs sm:tracking-[0.24em]">
             <Trophy className="h-4 w-4" />
             Quest Progress
+            </div>
+            <p className="mt-1 text-xs text-slate-400 sm:text-sm">
+              {unlockedCount} of {sectionMeta.length} sections unlocked
+            </p>
           </div>
-          <p className="mt-1 text-sm text-slate-400">
-            {unlockedCount} of {sectionMeta.length} sections unlocked
-          </p>
+          <div className="shrink-0 rounded-xl border border-white/10 bg-slate-950/70 px-3 py-2 text-xs text-slate-300 sm:hidden">
+            <span className="font-bold text-white">{Math.min(activeQuestion + 1, totalQuestions)}</span>
+            <span className="text-slate-500">/{totalQuestions}</span>
+          </div>
         </div>
 
         <div className="min-w-0 flex-1 lg:max-w-xl">
@@ -118,7 +124,7 @@ function ProgressTracker({ unlockedCount, activeQuestion, totalQuestions }) {
               transition={{ type: 'spring', stiffness: 90, damping: 18 }}
             />
           </div>
-          <div className="mt-3 grid grid-cols-7 gap-2">
+          <div className="mt-3 grid grid-cols-7 gap-1 sm:gap-2">
             {sectionMeta.map((section, index) => {
               const isUnlocked = index < unlockedCount;
               const isNext = index === unlockedCount;
@@ -126,7 +132,7 @@ function ProgressTracker({ unlockedCount, activeQuestion, totalQuestions }) {
               return (
                 <div
                   key={section.id}
-                  className={`group relative flex min-h-12 flex-col items-center justify-center rounded-xl border text-[10px] font-semibold uppercase tracking-wide transition ${
+                  className={`group relative flex h-9 min-w-0 flex-col items-center justify-center rounded-lg border text-[9px] font-semibold uppercase tracking-wide transition sm:h-12 sm:rounded-xl sm:text-[10px] ${
                     isUnlocked
                       ? 'border-cyan-300/40 bg-cyan-300/10 text-cyan-100 shadow-lg shadow-cyan-500/10'
                       : isNext
@@ -134,7 +140,7 @@ function ProgressTracker({ unlockedCount, activeQuestion, totalQuestions }) {
                         : 'border-white/10 bg-slate-950/70 text-slate-500'
                   }`}
                 >
-                  {isUnlocked ? React.createElement(section.icon, { className: 'h-4 w-4' }) : <Lock className="h-4 w-4" />}
+                  {isUnlocked ? React.createElement(section.icon, { className: 'h-3.5 w-3.5 sm:h-4 sm:w-4' }) : <Lock className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                   <span className="mt-1 hidden sm:block">{section.title}</span>
                 </div>
               );
@@ -142,7 +148,7 @@ function ProgressTracker({ unlockedCount, activeQuestion, totalQuestions }) {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-slate-300">
+        <div className="hidden rounded-2xl border border-white/10 bg-slate-950/70 px-4 py-3 text-sm text-slate-300 sm:block">
           <span className="text-slate-500">Question</span>{' '}
           <span className="font-bold text-white">{Math.min(activeQuestion + 1, totalQuestions)}</span>
           <span className="text-slate-500">/{totalQuestions}</span>
@@ -188,9 +194,9 @@ function QuizCard({ question, questionIndex, totalQuestions, disabled, onCorrect
 
   return (
     <GlassPanel className="overflow-hidden">
-      <div className="border-b border-white/10 bg-gradient-to-r from-cyan-400/10 via-fuchsia-400/10 to-emerald-400/10 p-5">
-        <div className="flex items-center justify-between gap-4">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.2em] text-cyan-100">
+      <div className="border-b border-white/10 bg-gradient-to-r from-cyan-400/10 via-fuchsia-400/10 to-emerald-400/10 p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-cyan-100 sm:text-xs sm:tracking-[0.2em]">
             <Play className="h-3.5 w-3.5" />
             Unlock Round {questionIndex + 1}
           </div>
@@ -198,12 +204,12 @@ function QuizCard({ question, questionIndex, totalQuestions, disabled, onCorrect
             {questionIndex + 1}/{totalQuestions}
           </div>
         </div>
-        <h2 className="mt-5 text-2xl font-black tracking-tight text-white sm:text-3xl">
+        <h2 className="mt-4 text-xl font-black tracking-tight text-white sm:mt-5 sm:text-3xl">
           {question.question}
         </h2>
       </div>
 
-      <div className="grid gap-3 p-5 sm:grid-cols-2">
+      <div className="grid gap-3 p-4 sm:grid-cols-2 sm:p-5">
         {question.options.map((option) => {
           const isSelected = selected === option;
           const showCorrect = isSelected && isCorrect === true;
@@ -216,7 +222,7 @@ function QuizCard({ question, questionIndex, totalQuestions, disabled, onCorrect
               whileHover={{ y: -3, scale: 1.01 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => chooseAnswer(option)}
-              className={`group flex min-h-16 items-center justify-between rounded-2xl border p-4 text-left text-sm font-semibold transition ${
+              className={`group flex min-h-14 items-center justify-between gap-3 rounded-2xl border p-3 text-left text-sm font-semibold transition sm:min-h-16 sm:p-4 ${
                 showCorrect
                   ? 'border-emerald-300/70 bg-emerald-400/20 text-emerald-50 shadow-lg shadow-emerald-500/20'
                   : showWrong
@@ -235,7 +241,7 @@ function QuizCard({ question, questionIndex, totalQuestions, disabled, onCorrect
         })}
       </div>
 
-      <div className="border-t border-white/10 px-5 py-4 text-sm">
+      <div className="border-t border-white/10 px-4 py-4 text-sm sm:px-5">
         <AnimatePresence mode="wait">
           {isCorrect === false && (
             <Motion.p
@@ -278,7 +284,7 @@ function QuizCard({ question, questionIndex, totalQuestions, disabled, onCorrect
 
 function LockedOverlay({ title }) {
   return (
-    <div className="flex min-h-40 flex-col items-center justify-center rounded-3xl border border-dashed border-white/10 bg-slate-950/60 p-6 text-center">
+    <div className="flex min-h-36 flex-col items-center justify-center rounded-2xl border border-dashed border-white/10 bg-slate-950/60 p-4 text-center sm:min-h-40 sm:rounded-3xl sm:p-6">
       <div className="grid h-14 w-14 place-items-center rounded-2xl border border-fuchsia-300/30 bg-fuchsia-300/10 text-fuchsia-100 shadow-lg shadow-fuchsia-500/10">
         <Lock className="h-6 w-6" />
       </div>
@@ -301,19 +307,19 @@ function RevealSection({ id, title, icon: Icon, index, unlocked, children }) {
       transition={{ duration: 0.55, delay: index * 0.04 }}
       className="relative"
     >
-      <GlassPanel className={`relative overflow-hidden p-5 sm:p-7 ${unlocked ? '' : 'min-h-56'}`}>
+      <GlassPanel className={`relative overflow-hidden p-4 sm:p-7 ${unlocked ? '' : 'min-h-48 sm:min-h-56'}`}>
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent" />
-        <div className="mb-6 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className={`grid h-11 w-11 place-items-center rounded-2xl border ${unlocked ? 'border-cyan-300/40 bg-cyan-300/10 text-cyan-100' : 'border-white/10 bg-slate-950 text-slate-500'}`}>
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-3 sm:mb-6 sm:gap-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-2xl border sm:h-11 sm:w-11 ${unlocked ? 'border-cyan-300/40 bg-cyan-300/10 text-cyan-100' : 'border-white/10 bg-slate-950 text-slate-500'}`}>
               {unlocked ? React.createElement(Icon, { className: 'h-5 w-5' }) : <Lock className="h-5 w-5" />}
             </div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.24em] text-slate-500">Level {index + 1}</p>
-              <h2 className="text-2xl font-black text-white sm:text-3xl">{title}</h2>
+            <div className="min-w-0">
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 sm:text-xs sm:tracking-[0.24em]">Level {index + 1}</p>
+              <h2 className="truncate text-xl font-black text-white sm:text-3xl">{title}</h2>
             </div>
           </div>
-          <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-bold uppercase tracking-widest ${unlocked ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-100' : 'border-white/10 bg-slate-900 text-slate-500'}`}>
+          <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-widest sm:text-xs ${unlocked ? 'border-emerald-300/40 bg-emerald-300/10 text-emerald-100' : 'border-white/10 bg-slate-900 text-slate-500'}`}>
             {unlocked ? <Unlock className="h-3.5 w-3.5" /> : <Lock className="h-3.5 w-3.5" />}
             {unlocked ? 'Unlocked' : 'Locked'}
           </span>
@@ -346,19 +352,19 @@ function StatTile({ value, label }) {
 
 function Hero({ personal, stats }) {
   return (
-    <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+    <div className="grid gap-7 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
       <div>
-        <div className="inline-flex items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.24em] text-cyan-100">
+        <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-cyan-300/30 bg-cyan-300/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.18em] text-cyan-100 sm:px-4 sm:text-xs sm:tracking-[0.24em]">
           <Sparkles className="h-4 w-4" />
           Quiz Reveal Portfolio
         </div>
-        <h1 className="mt-6 text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
+        <h1 className="mt-5 break-words text-4xl font-black tracking-tight text-white sm:mt-6 sm:text-6xl lg:text-7xl">
           {personal?.name || 'Portfolio Name'}
         </h1>
-        <p className="mt-4 max-w-2xl text-xl font-semibold text-cyan-100 sm:text-2xl">
+        <p className="mt-4 max-w-2xl text-lg font-semibold text-cyan-100 sm:text-2xl">
           {personal?.title || 'Creative Professional'}
         </p>
-        <p className="mt-5 max-w-2xl text-base leading-8 text-slate-300">
+        <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:mt-5 sm:text-base sm:leading-8">
           {personal?.tagline || personal?.bio || 'A polished portfolio experience is ready to be unlocked.'}
         </p>
         {personal?.location && (
@@ -369,7 +375,7 @@ function Hero({ personal, stats }) {
         )}
       </div>
 
-      <div className="relative mx-auto w-full max-w-sm">
+      <div className="relative mx-auto w-full max-w-xs sm:max-w-sm">
         <div className="absolute -inset-4 rounded-full bg-gradient-to-br from-cyan-400/30 via-fuchsia-400/20 to-emerald-300/20 blur-3xl" />
         <div className="relative rounded-[2rem] border border-white/10 bg-slate-950/70 p-4 shadow-2xl shadow-cyan-950/40">
           {personal?.avatar ? (
@@ -383,7 +389,7 @@ function Hero({ personal, stats }) {
               <UserRound className="h-20 w-20" />
             </div>
           )}
-          <div className="mt-4 grid grid-cols-3 gap-3">
+          <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
             <StatTile value={stats?.yearsExperience} label="Years" />
             <StatTile value={stats?.projectsCompleted} label="Projects" />
             <StatTile value={stats?.happyClients} label="Clients" />
@@ -396,12 +402,12 @@ function Hero({ personal, stats }) {
 
 function About({ personal }) {
   return (
-    <div className="grid gap-6 md:grid-cols-[0.85fr_1.15fr] md:items-center">
+    <div className="grid gap-5 md:grid-cols-[0.85fr_1.15fr] md:items-center">
       {personal?.avatar ? (
         <img
           src={personal.avatar}
           alt={personal?.name || 'Portfolio avatar'}
-          className="aspect-[4/5] w-full rounded-3xl object-cover ring-1 ring-white/10"
+          className="mx-auto aspect-[4/5] w-full max-w-xs rounded-3xl object-cover ring-1 ring-white/10 md:max-w-none"
         />
       ) : (
         <div className="grid aspect-[4/5] w-full place-items-center rounded-3xl bg-slate-950 text-slate-500 ring-1 ring-white/10">
@@ -409,12 +415,12 @@ function About({ personal }) {
         </div>
       )}
       <div className="space-y-5">
-        <p className="text-lg leading-8 text-slate-300">
+        <p className="text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
           {personal?.bio || 'No biography has been added yet.'}
         </p>
         <div className="rounded-3xl border border-cyan-300/20 bg-cyan-300/10 p-5">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-cyan-100">Signal</p>
-          <p className="mt-2 text-xl font-black text-white">
+          <p className="mt-2 text-lg font-black text-white sm:text-xl">
             {personal?.tagline || 'Building thoughtful digital products.'}
           </p>
         </div>
@@ -433,9 +439,9 @@ function Skills({ skills }) {
   }, {});
 
   return (
-    <div className="grid gap-5 lg:grid-cols-2">
+    <div className="grid gap-4 lg:grid-cols-2">
       {Object.entries(grouped).map(([category, items]) => (
-        <div key={category} className="rounded-3xl border border-white/10 bg-slate-950/55 p-5">
+        <div key={category} className="rounded-2xl border border-white/10 bg-slate-950/55 p-4 sm:rounded-3xl sm:p-5">
           <h3 className="mb-4 flex items-center gap-2 text-lg font-black text-white">
             <Star className="h-5 w-5 text-fuchsia-200" />
             {category}
@@ -469,7 +475,7 @@ function Projects({ projects }) {
   if (!projects.length) return <EmptyState label="Projects" />;
 
   return (
-    <div className="grid gap-5 lg:grid-cols-2">
+    <div className="grid gap-4 lg:grid-cols-2">
       {projects.map((project, index) => (
         <ProjectCard key={`${project.title}-${index}`} project={project} index={index} />
       ))}
@@ -481,7 +487,7 @@ function ProjectCard({ project, index }) {
   return (
     <Motion.article
       whileHover={{ y: -6 }}
-      className="group overflow-hidden rounded-3xl border border-white/10 bg-slate-950/60"
+      className="group overflow-hidden rounded-2xl border border-white/10 bg-slate-950/60 sm:rounded-3xl"
     >
       {project.image ? (
         <div className="relative aspect-video overflow-hidden">
@@ -497,7 +503,7 @@ function ProjectCard({ project, index }) {
           <Code2 className="h-12 w-12" />
         </div>
       )}
-      <div className="p-5">
+      <div className="p-4 sm:p-5">
         <h3 className="text-xl font-black text-white">{project.title || 'Untitled Project'}</h3>
         <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-400">
           {project.description || 'Project details are coming soon.'}
@@ -533,7 +539,7 @@ function Experience({ experience }) {
     <div className="relative space-y-4">
       <div className="absolute bottom-6 left-5 top-6 hidden w-px bg-gradient-to-b from-cyan-300 via-fuchsia-300 to-emerald-300 sm:block" />
       {experience.map((item, index) => (
-        <div key={`${item.company}-${item.role}-${index}`} className="relative rounded-3xl border border-white/10 bg-slate-950/60 p-5 sm:ml-12">
+        <div key={`${item.company}-${item.role}-${index}`} className="relative rounded-2xl border border-white/10 bg-slate-950/60 p-4 sm:ml-12 sm:rounded-3xl sm:p-5">
           <div className="absolute -left-[3.25rem] top-6 hidden h-5 w-5 rounded-full border-4 border-slate-950 bg-cyan-300 shadow-lg shadow-cyan-300/30 sm:block" />
           <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
             <div>
@@ -555,12 +561,12 @@ function Testimonials({ testimonials }) {
   if (!testimonials.length) return <EmptyState label="Testimonials" />;
 
   return (
-    <div className="grid gap-5 md:grid-cols-2">
+    <div className="grid gap-4 md:grid-cols-2">
       {testimonials.map((testimonial, index) => (
         <Motion.figure
           key={`${testimonial.name}-${index}`}
           whileHover={{ y: -5 }}
-          className="rounded-3xl border border-white/10 bg-slate-950/60 p-5"
+          className="rounded-2xl border border-white/10 bg-slate-950/60 p-4 sm:rounded-3xl sm:p-5"
         >
           <div className="flex items-center gap-4">
             {testimonial.avatar ? (
@@ -597,10 +603,10 @@ function Contact({ personal, socials }) {
   ].filter((link) => link.value);
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-      <div className="rounded-3xl border border-fuchsia-300/20 bg-fuchsia-300/10 p-6">
+    <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="rounded-2xl border border-fuchsia-300/20 bg-fuchsia-300/10 p-5 sm:rounded-3xl sm:p-6">
         <Award className="h-10 w-10 text-fuchsia-100" />
-        <h3 className="mt-4 text-3xl font-black text-white">Final level cleared.</h3>
+        <h3 className="mt-4 text-2xl font-black text-white sm:text-3xl">Final level cleared.</h3>
         <p className="mt-3 text-slate-300">
           Connect with {personal?.name || 'this portfolio owner'} and turn the unlocked story into a real conversation.
         </p>
@@ -671,7 +677,7 @@ export default function QuizReveal() {
   };
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#030712] text-white">
+    <main className="min-h-screen overflow-x-hidden bg-[#030712] text-white">
       <div className="pointer-events-none fixed inset-0">
         <div className="absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 rounded-full bg-cyan-500/20 blur-3xl" />
         <div className="absolute bottom-24 left-0 h-80 w-80 rounded-full bg-fuchsia-500/15 blur-3xl" />
@@ -679,15 +685,15 @@ export default function QuizReveal() {
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:44px_44px]" />
       </div>
 
-      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
+      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-5 px-3 py-4 sm:gap-8 sm:px-6 sm:py-6 lg:px-8">
         <ProgressTracker
           unlockedCount={unlockedCount}
           activeQuestion={currentQuestionIndex}
           totalQuestions={quizQuestions.length}
         />
 
-        <div className="grid gap-8 xl:grid-cols-[minmax(0,1fr)_390px] xl:items-start">
-          <div className="space-y-8">
+        <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_390px] xl:items-start xl:gap-8">
+          <div className="order-2 min-w-0 space-y-5 sm:space-y-8 xl:order-1">
             {sectionMeta.map((section, index) => (
               <RevealSection
                 key={section.id}
@@ -702,7 +708,7 @@ export default function QuizReveal() {
             ))}
           </div>
 
-          <aside className="xl:sticky xl:top-36">
+          <aside className="order-1 min-w-0 xl:order-2 xl:sticky xl:top-36">
             <AnimatePresence mode="wait">
               <Motion.div
                 key={currentQuestionIndex}
