@@ -1,3 +1,10 @@
+## [1.43.1](https://github.com/anurag3407/career-pilot/compare/v1.43.0...v1.43.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* **security:** add adminOnly middleware to debug job-alert routes ([#1257](https://github.com/anurag3407/career-pilot/issues/1257)) ([1dd1c8a](https://github.com/anurag3407/career-pilot/commit/1dd1c8a6942a08e5f3bd3b970894675925c07345))
+
 # [1.43.0](https://github.com/anurag3407/career-pilot/compare/v1.42.0...v1.43.0) (2026-05-27)
 
 
