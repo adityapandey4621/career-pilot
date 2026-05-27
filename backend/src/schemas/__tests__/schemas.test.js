@@ -356,9 +356,9 @@ describe('payments.schema — createOrderSchema', () => {
 describe('payments.schema — verifyPaymentSchema', () => {
   test('accepts valid body', () => {
     const result = verifyPaymentSchema.safeParse({
-      razorpay_order_id: 'order_123',
-      razorpay_payment_id: 'pay_456',
-      razorpay_signature: 'sig_789',
+      razorpay_order_id: 'test_order_id',
+      razorpay_payment_id: 'test_payment_id',
+      razorpay_signature: 'test_signature_string',
       proposalId: 'prop_001',
     });
     assert.ok(result.success);
@@ -376,12 +376,12 @@ import { enable2FASchema, tokenOnlySchema, backupCodeSchema } from '../twoFactor
 
 describe('twoFactor.schema — enable2FASchema', () => {
   test('accepts valid body', () => {
-    const result = enable2FASchema.safeParse({ secret: 'ABCD', token: '123456' });
+    const result = enable2FASchema.safeParse({ secret: 'test_secret_key', token: '123456' });
     assert.ok(result.success);
   });
 
   test('rejects missing token', () => {
-    const result = enable2FASchema.safeParse({ secret: 'ABCD' });
+    const result = enable2FASchema.safeParse({ secret: 'test_secret_key' });
     assert.ok(!result.success);
   });
 });
