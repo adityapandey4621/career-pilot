@@ -1,3 +1,12 @@
+## [1.34.1](https://github.com/anurag3407/career-pilot/compare/v1.34.0...v1.34.1) (2026-05-27)
+
+
+### Bug Fixes
+
+* **auth:** add Cache-Control: no-store to token endpoint; frontend exchanges code not token ([c022b32](https://github.com/anurag3407/career-pilot/commit/c022b325363ce0b2e9104d886c1999ba0c3f1cb6))
+* **auth:** replace LinkedIn OAuth token-in-URL with server-side code exchange ([327b8c4](https://github.com/anurag3407/career-pilot/commit/327b8c47207016e405cc84b39e7a5621beb6c5a6)), closes [#1080](https://github.com/anurag3407/career-pilot/issues/1080)
+* **fellowships:** rate-limit student email verification endpoints ([f0759d7](https://github.com/anurag3407/career-pilot/commit/f0759d7acaf0ae0e2c2b800ae0556a4934a82efe)), closes [#1084](https://github.com/anurag3407/career-pilot/issues/1084)
+
 # [1.34.0](https://github.com/anurag3407/career-pilot/compare/v1.33.1...v1.34.0) (2026-05-27)
 
 
