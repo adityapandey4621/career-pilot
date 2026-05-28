@@ -1,3 +1,15 @@
+# [1.59.0](https://github.com/anurag3407/career-pilot/compare/v1.58.0...v1.59.0) (2026-05-28)
+
+
+### Bug Fixes
+
+* update anchor tag logic suggested for placeholder URLs ([020453c](https://github.com/anurag3407/career-pilot/commit/020453c9226bf1665dd77a0825485efc84689924))
+
+
+### Features
+
+* complete music vinyl about section ([146578f](https://github.com/anurag3407/career-pilot/commit/146578f3ed0f3e3507af9db911cc089c3f513cab))
+
 # [1.58.0](https://github.com/anurag3407/career-pilot/compare/v1.57.0...v1.58.0) (2026-05-28)
 
 
