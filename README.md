@@ -4,6 +4,8 @@ React + Vite frontend for the AI Resume Builder application.
 
 ## Quick Start
 
+Now, In order to install backend dependencies, run the commands written below
+
 ```bash
 # Install dependencies
 npm install
