@@ -1,6 +1,52 @@
 import React from 'react';
 import data from '../../../../data/dummy_data.json';
+import { motion } from "framer-motion";
+function DNAHelix() {
+  return (
+    <div className="relative h-80 flex justify-center items-center overflow-hidden">
+      {[...Array(12)].map((_, i) => (
+        <React.Fragment key={i}>
+  <motion.div
+    animate={{
+      x: [0, 100, 0, -100, 0],
+      rotate: [0, 180, 360],
+    }}
+    transition={{
+      duration: 4,
+      repeat: Infinity,
+      delay: i * 0.2,
+    }}
+    className="absolute w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_20px_#22d3ee]"
+    style={{ top: `${i * 22}px` }}
+  />
 
+  {/* DNA Strand */}
+  <div
+    className="absolute h-[2px] bg-white/40"
+    style={{
+      width: "200px",
+      top: `${i * 22 + 8}px`,
+    }}
+  />
+
+  <motion.div
+    animate={{
+      x: [0, -100, 0, 100, 0],
+      rotate: [360, 180, 0],
+    }}
+    transition={{
+      duration: 4,
+      repeat: Infinity,
+      delay: i * 0.2,
+    }}
+    className="absolute w-4 h-4 rounded-full bg-pink-500 shadow-[0_0_20px_#ec4899]"
+    style={{ top: `${i * 22}px` }}
+  />
+</React.Fragment>
+      ))}
+    </div>
+  );
+}
 /**
  * Digital DNA Portfolio Template
  * Category: 3D / WebGL
@@ -10,9 +56,12 @@ export default function DigitalDNA() {
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center justify-center p-8 font-sans">
       <div className="max-w-3xl w-full text-center">
-        <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
-          {data.personal.name}
-        </h1>
+
+  <DNAHelix />
+
+  <h1 className="text-5xl md:text-7xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">
+    {data.personal.name}
+  </h1>
         <p className="text-xl md:text-2xl text-gray-400 mb-8">{data.personal.title}</p>
         <div className="p-8 border-2 border-dashed border-cyan-500/40 rounded-2xl bg-gray-900/50 backdrop-blur-sm">
           <span className="inline-block px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest mb-4">
