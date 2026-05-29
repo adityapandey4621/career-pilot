@@ -27,7 +27,7 @@ export default function Projects({ data }) {
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {(data.projects || []).map((project, index) => (
             <motion.article
-              key={project?.title}
+              key={`${project?.title || 'project'}-${index}`}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
@@ -51,8 +51,11 @@ export default function Projects({ data }) {
                 <p className="mt-3 line-clamp-3 text-sm leading-7 text-[#6F746B]">{project?.description}</p>
 
                 <div className="mt-5 flex flex-wrap gap-2">
-                  {(project?.techStack || []).map((tech) => (
-                    <span key={tech} className="rounded-full bg-[#FFFDF8] px-3 py-1 text-xs font-semibold text-[#526053]">
+                  {(project?.techStack || []).map((tech, techIndex) => (
+                    <span
+                      key={`${tech || 'tech'}-${techIndex}`}
+                      className="rounded-full bg-[#FFFDF8] px-3 py-1 text-xs font-semibold text-[#526053]"
+                    >
                       {tech}
                     </span>
                   ))}

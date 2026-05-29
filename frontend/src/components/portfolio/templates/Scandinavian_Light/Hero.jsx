@@ -15,15 +15,16 @@ const item = {
 };
 
 function shortBio(bio = '') {
-  if (bio.length <= 145) return bio;
-  return `${bio.slice(0, 145).trim()}...`;
+  const text = typeof bio === 'string' ? bio : '';
+  if (text.length <= 145) return text;
+  return `${text.slice(0, 145).trim()}...`;
 }
 
 export default function Hero({ data }) {
   const stats = [
-    { value: data.stats?.yearsExperience, label: 'Years' },
-    { value: data.stats?.projectsCompleted, label: 'Projects' },
-    { value: data.stats?.happyClients, label: 'Clients' },
+    { value: data.stats?.yearsExperience ?? 0, label: 'Years' },
+    { value: data.stats?.projectsCompleted ?? 0, label: 'Projects' },
+    { value: data.stats?.happyClients ?? 0, label: 'Clients' },
   ];
 
   return (

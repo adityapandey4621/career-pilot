@@ -27,7 +27,9 @@ export default function Testimonials({ data }) {
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {(data.testimonials || []).map((testimonial, index) => (
             <motion.article
-              key={`${testimonial?.name}-${testimonial?.role}`}
+              key={`${testimonial?.name || 'testimonial'}-${
+                testimonial?.role || 'role'
+              }-${index}`}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}

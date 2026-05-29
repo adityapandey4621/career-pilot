@@ -20,7 +20,9 @@ function getPercent(level) {
 export default function Skills({ data }) {
   const groupedSkills = (data.skills || []).reduce((groups, skill) => {
     const category = skill?.category || 'General';
-    return { ...groups, [category]: [...(groups[category] || []), skill] };
+    if (!groups[category]) groups[category] = [];
+    groups[category].push(skill);
+    return groups;
   }, {});
 
   return (

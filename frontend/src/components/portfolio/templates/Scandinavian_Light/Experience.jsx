@@ -28,7 +28,7 @@ export default function Experience({ data }) {
           <div className="absolute left-5 top-4 h-[calc(100%-2rem)] w-px bg-[#D9C3A8] md:left-1/2" />
           {(data.experience || []).map((job, index) => (
             <motion.article
-              key={`${job?.role}-${job?.company}`}
+              key={`${job?.role || 'role'}-${job?.company || 'company'}-${index}`}
               initial={{ opacity: 0, x: index % 2 === 0 ? -24 : 24 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-80px' }}
@@ -37,10 +37,13 @@ export default function Experience({ data }) {
                 index % 2 === 0 ? 'md:pr-10' : 'md:ml-auto md:pl-10'
               }`}
             >
-              <span className="absolute left-[0.85rem] top-7 h-3 w-3 rounded-full border-2 border-[#FFFDF8] bg-[#C58A63] md:left-auto md:right-[-0.4rem]" />
-              {index % 2 !== 0 ? (
-                <span className="absolute top-7 hidden h-3 w-3 rounded-full border-2 border-[#FFFDF8] bg-[#C58A63] md:left-[-0.35rem] md:block" />
-              ) : null}
+              <span
+                className={`absolute left-[0.85rem] top-7 h-3 w-3 rounded-full border-2 border-[#FFFDF8] bg-[#C58A63] ${
+                  index % 2 === 0
+                    ? 'md:left-auto md:right-[-0.4rem]'
+                    : 'md:left-[-0.35rem]'
+                }`}
+              />
 
               <div className="rounded-[1.5rem] border border-[#E7DED1] bg-[#FFFDF8] p-6 shadow-[0_18px_55px_rgba(70,56,39,0.07)]">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-[#8B7D6B]">
