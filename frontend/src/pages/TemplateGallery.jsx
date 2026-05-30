@@ -226,11 +226,20 @@ export default function TemplateGallery() {
       category: "Dashboard",
       colorScheme: "Colorful",
       layout: "Cards",
-      author: "Michael",
-      views: 2100,
-      rating: 4.9,
       image: "/template-previews/Creative-Dashboard.png",
       createdAt: "2026-05-15",
+    },
+    {
+      id: 4,
+      title: "Boarding Pass",
+      category: "Unique",
+      colorScheme: "Light",
+      layout: "Creative",
+      author: "Placeholder",
+      views: 0,
+      rating: 0,
+      image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&h=450&fit=crop",
+      createdAt: "2026-05-30",
     },
   ];
 
