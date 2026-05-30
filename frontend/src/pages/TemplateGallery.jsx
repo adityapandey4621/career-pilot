@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import DeployModal from "../components/portfolio/DeployModal";
+import PortfolioBuilderModal from "../components/portfolio/PortfolioBuilderModal";
 import ThemeSelector from "../components/portfolio/ThemeSelector";
 import { useTheme } from "../hooks/useTheme";
 import { motion, AnimatePresence } from "framer-motion";
@@ -239,6 +240,7 @@ export default function TemplateGallery() {
   const [sort, setSort] = useState("Popular");
   const [selectedTheme, setSelectedTheme] = useState("minimal");
   const [isDeployModalOpen, setIsDeployModalOpen] = useState(false);
+  const [isBuilderModalOpen, setIsBuilderModalOpen] = useState(false);
   const [selectedPortfolioTitle, setSelectedPortfolioTitle] = useState("");
 
   const CATEGORY_OPTIONS = [
@@ -338,13 +340,22 @@ export default function TemplateGallery() {
               template={template}
               onUse={(title) => {
                 setSelectedPortfolioTitle(title);
-                setIsDeployModalOpen(true);
+                setIsBuilderModalOpen(true);
               }}
             />
           ))}
         </div>
       )}
 
+      <PortfolioBuilderModal
+        isOpen={isBuilderModalOpen}
+        onClose={() => setIsBuilderModalOpen(false)}
+        portfolioTitle={selectedPortfolioTitle}
+        onProceedToDeploy={(content) => {
+          setIsBuilderModalOpen(false);
+          setIsDeployModalOpen(true);
+        }}
+      />
       <DeployModal
         isOpen={isDeployModalOpen}
         onClose={() => setIsDeployModalOpen(false)}
