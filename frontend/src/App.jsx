@@ -99,7 +99,7 @@ import MemphisPop from './components/portfolio/templates/Memphis_Pop/index.jsx';
 import CassetteMixtape from './components/portfolio/templates/Cassette_Mixtape/index.jsx';
 import MagneticDock from './components/portfolio/templates/Magnetic_Dock/index.jsx';
 import Hero from './components/portfolio/templates/Magazine_Editorial/Hero';
-import OnePageScroll from './components/portfolio/templates/One_Page_Scroll/index.jsx';
+import TwilightHorizon from './components/portfolio/templates/Twilight_Horizon/index.jsx';
 import TestSocialLinks from './pages/TestSocialLinks';
 
 function LoadingScreen({ label }) {
@@ -429,7 +429,7 @@ function AppRoutes() {
 
         {/* Catch-All Route */}
         <Route path="*" element={<NotFound />} />
-        <Route path="/templates/one-page-scroll" element={<OnePageScroll />} />
+        <Route path="/templates/twilight-horizon" element={<TwilightHorizon />} />
       </Routes>
     </BrowserRouter>
   );
