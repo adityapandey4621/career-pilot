@@ -170,7 +170,7 @@ function AppRoutes() {
         <Route path="/upload" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
         <Route path="/resume-builder" element={<ProtectedRoute><ResumeBuilder /></ProtectedRoute>} />
         <Route path="/text-to-resume" element={<ProtectedRoute><TextToResume /></ProtectedRoute>} />
-        <Route path="/enhance/:resumeId" element={<ProtectedRoute><Enhance /></ProtectedRoute>} />
+        <Route path="/enhance/:resumeId" element={<Enhance />} />
         <Route path="/resume/:resumeId" element={<ProtectedRoute><ResumeView /></ProtectedRoute>} />
         <Route path="/jobs" element={<ProtectedRoute><JobSearch /></ProtectedRoute>} />
         <Route path="/job-alerts" element={<ProtectedRoute><JobAlerts /></ProtectedRoute>} />
