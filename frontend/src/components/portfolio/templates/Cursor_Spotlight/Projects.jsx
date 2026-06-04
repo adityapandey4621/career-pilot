@@ -29,7 +29,7 @@ const Projects = ({ projects }) => {
               className="absolute inset-0 z-0"
             />
             
-            <div className="relative z-10 h-full w-full rounded-xl bg-zinc-950 p-6">
+            <div className="relative z-10 h-full w-full rounded-xl bg-zinc-950 p-6 flex flex-col">
               <div className="mb-4 overflow-hidden rounded-lg">
                 <motion.img 
                   variants={{ hover: { scale: 1.1, filter: "hue-rotate(15deg) contrast(1.2)" } }}
@@ -42,7 +42,7 @@ const Projects = ({ projects }) => {
               <h3 className="mb-2 text-xl font-bold text-white">{project.title}</h3>
               <p className="mb-6 text-sm text-zinc-400">{project.description}</p>
               <div className="mb-6 flex flex-wrap gap-2">
-                {project.techStack.map((tech, j) => (
+                {Array.isArray(project.techStack) && project.techStack.map((tech, j) => (
                   <span key={j} className="rounded bg-blue-500/10 px-2 py-1 text-xs text-blue-400">
                     {tech}
                   </span>

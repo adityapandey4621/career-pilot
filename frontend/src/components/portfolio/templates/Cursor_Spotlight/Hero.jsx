@@ -35,16 +35,19 @@ const Hero = ({ personal, socials }) => {
 
       <div className="flex gap-4">
         {[
-          { icon: Github, url: socials.github },
-          { icon: Linkedin, url: socials.linkedin },
-          { icon: Twitter, url: socials.twitter },
-          { icon: Mail, url: `mailto:${socials.email}` }
-        ].map((item, i) => (
+          { icon: Github, url: socials.github, label: "GitHub" },
+          { icon: Linkedin, url: socials.linkedin, label: "LinkedIn" },
+          { icon: Twitter, url: socials.twitter, label: "Twitter" },
+          { icon: Mail, url: socials.email ? `mailto:${socials.email}` : '', label: "Email" }
+        ]
+        .filter(item => item.url)
+        .map((item, i) => (
           <motion.a
             key={i}
             href={item.url}
             target="_blank"
             rel="noreferrer"
+            aria-label={item.label}
             whileHover={{ scale: 1.2, rotate: 5, color: '#60a5fa' }}
             whileTap={{ scale: 0.9 }}
             className="rounded-full bg-zinc-900/50 p-4 text-zinc-400 border border-zinc-800 backdrop-blur-sm transition-colors hover:border-blue-500/50 hover:bg-blue-500/10"
