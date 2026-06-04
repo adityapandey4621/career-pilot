@@ -1,3 +1,87 @@
+# [1.137.0](https://github.com/anurag3407/career-pilot/compare/v1.136.0...v1.137.0) (2026-06-04)
+
+
+### Features
+
+* add high contrast accessibility theme ([e7f02b9](https://github.com/anurag3407/career-pilot/commit/e7f02b935193aea93809be1df62997b0d522e076))
+
+# [1.136.0](https://github.com/anurag3407/career-pilot/compare/v1.135.0...v1.136.0) (2026-06-04)
+
+
+### Bug Fixes
+
+* **portfolio:** address review comments for cursor spotlight template ([a873c97](https://github.com/anurag3407/career-pilot/commit/a873c97efcb727dc794e7ad93f24f0754bcbc34e))
+
+
+### Features
+
+* complete modular implementation of Zoom Into Work portfolio template ([0f33f5d](https://github.com/anurag3407/career-pilot/commit/0f33f5dc4872ae0274f9823ea89d302c35cbd703))
+* **portfolio:** implement cursor spotlight animated template ([db5f03e](https://github.com/anurag3407/career-pilot/commit/db5f03e13ef418a0300f80e28ce283a260245c28))
+
+# [1.135.0](https://github.com/anurag3407/career-pilot/compare/v1.134.0...v1.135.0) (2026-06-04)
+
+
+### Features
+
+* implement Ocean Depths portfolio template with full underwater scene ([8041748](https://github.com/anurag3407/career-pilot/commit/80417489eb77155cae2dde41de123a85e0dcb85c)), closes [#1863](https://github.com/anurag3407/career-pilot/issues/1863)
+
+# [1.134.0](https://github.com/anurag3407/career-pilot/compare/v1.133.1...v1.134.0) (2026-06-03)
+
+
+### Features
+
+* complete High Fashion portfolio template with all sections and mobile layout ([152e32f](https://github.com/anurag3407/career-pilot/commit/152e32f99a07ceda04f5c7e0f30c51bbb19d836d))
+* implement High Fashion theme About section with editorial two-column layout ([0c5551a](https://github.com/anurag3407/career-pilot/commit/0c5551aa5c9382c58f6be5157b66c3504935e1f1)), closes [#1553](https://github.com/anurag3407/career-pilot/issues/1553)
+
+## [1.133.1](https://github.com/anurag3407/career-pilot/compare/v1.133.0...v1.133.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* **oled-black:** add external link targets, accessible SocialLink aria-label, guard testimonials for empty arrays ([fdf6e58](https://github.com/anurag3407/career-pilot/commit/fdf6e589c934ae8d957ca7c9a2f3b37ae7308364))
+
+# [1.133.0](https://github.com/anurag3407/career-pilot/compare/v1.132.0...v1.133.0) (2026-06-03)
+
+
+### Features
+
+* **portfolio:** implement modern, mobile-optimized elevator pitch template ([5cd3e53](https://github.com/anurag3407/career-pilot/commit/5cd3e53e2981cab8afb4dda8c09c6dd8eb60d4be))
+
+# [1.132.0](https://github.com/anurag3407/career-pilot/compare/v1.131.0...v1.132.0) (2026-06-03)
+
+
+### Features
+
+* implement rocket launch hero section ([69cf0e4](https://github.com/anurag3407/career-pilot/commit/69cf0e4c7c9a4a03307e12c70ae106b1c1a1f8bd))
+* **scifi-hud:** simplify Contact heading and wire JSON data ([91388d3](https://github.com/anurag3407/career-pilot/commit/91388d3191f203fee7dede1d938d7af5b317c167))
+
+# [1.131.0](https://github.com/anurag3407/career-pilot/compare/v1.130.0...v1.131.0) (2026-06-03)
+
+
+### Features
+
+* added linkedin public job scraper ([051f446](https://github.com/anurag3407/career-pilot/commit/051f446ac099ec7d35af97079375c5673cc86ff6))
+
+# [1.130.0](https://github.com/anurag3407/career-pilot/compare/v1.129.0...v1.130.0) (2026-06-03)
+
+
+### Features
+
+* implement responsive mobile navigation and layout rendering [#465](https://github.com/anurag3407/career-pilot/issues/465) ([b6c6e09](https://github.com/anurag3407/career-pilot/commit/b6c6e09eaaa3c264504b038bf13d796e7235fced))
+
+# [1.129.0](https://github.com/anurag3407/career-pilot/compare/v1.128.1...v1.129.0) (2026-06-02)
+
+
+### Bug Fixes
+
+* address bull board review comments ([8acbb3a](https://github.com/anurag3407/career-pilot/commit/8acbb3ac4f7aba146dec846c5de92dfdaa3aefba))
+* resolve merge conflicts and address bull board review ([25173d5](https://github.com/anurag3407/career-pilot/commit/25173d5c629eac3fbb424e76aa31638278b45973))
+
+
+### Features
+
+* add secured BullMQ monitoring dashboard ([b5fb101](https://github.com/anurag3407/career-pilot/commit/b5fb10111cb9a4ec5205d8f6ace1f2ca9b7af57b))
+
 ## [1.128.1](https://github.com/anurag3407/career-pilot/compare/v1.128.0...v1.128.1) (2026-06-02)
 
 
