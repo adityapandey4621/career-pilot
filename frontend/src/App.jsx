@@ -3,6 +3,8 @@
  * Main Application Component with Route-based Code Splitting
  * Implements lazy loading for improved performance
  */
+
+import VercelDeploy from "./components/portfolio/templates/Vercel_Deploy/index";
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import StockTicker from "./components/portfolio/templates/Finance_Corporate/StockTicker";
 import Deployments from './pages/Deployments'
@@ -258,6 +260,7 @@ function AppRoutes() {
         <Route path="/templates/memphis-pop" element={<MemphisPop />} />
         <Route path="/templates/cassette-mixtape" element={<CassetteMixtape />} />
         <Route path="/templates/magnetic-dock" element={<MagneticDock />} />
+        <Route path="/templates/vercel-deploy" element={<VercelDeploy />} />
         
         {/* Core Protected Routes */}
         <Route 
