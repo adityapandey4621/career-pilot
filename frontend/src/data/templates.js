@@ -1,5 +1,18 @@
 export const templates = [
 {
+  "id": "Anonymous_Whistleblower_Drop_Box",
+  "title": "Anonymous Whistleblower Drop Box",
+  "category": "Portfolio",
+  "colorScheme": "Dark",
+  "layout": "Interactive",
+  "author": "System",
+  "views": 0,
+  "rating": 0,
+  "image": "/template-previews/Anonymous_Whistleblower_Drop_Box.png",
+  "createdAt": "2026-06-01",
+  "isComplete": true
+},
+{
   "id": "Infinite_Zoom_Mandelbrot_Set",
   "title": "Infinite Zoom Mandelbrot Set",
   "category": "Portfolio",
