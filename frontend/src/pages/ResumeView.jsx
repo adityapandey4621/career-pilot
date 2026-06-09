@@ -19,13 +19,15 @@ export default function ResumeView() {
   const navigate = useNavigate()
 
   const [resume, setResume] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [downloading, setDownloading] = useState(false)
   const [activeTab, setActiveTab] = useState('preview') // 'preview' | 'versions' | 'ats'
   const [previewTab, setPreviewTab] = useState('enhanced') // 'enhanced' | 'original'
   const [scoreData, setScoreData] = useState(null)
   const [scoring, setScoring] = useState(false)
   const [scoringStep, setScoringStep] = useState(0)
+  const [fontFamily, setFontFamily] = useState("Poppins")
+  const [fontSize, setFontSize] = useState("Medium")
 
   useEffect(() => {
     let interval
@@ -94,6 +96,9 @@ export default function ResumeView() {
   const handleDownloadPdf = async () => {
     try {
       setDownloading(true)
+      toast.success(
+  `Exporting with ${fontFamily} font and ${fontSize} size`
+)
       const blob = await resumeApi.downloadPdf(resumeId, previewTab)
 
       // Create download link
@@ -210,6 +215,16 @@ export default function ResumeView() {
             </p>
           </div>
           <div className="flex gap-2">
+            <Link 
+              to="/interview-prep" 
+              state={{ 
+                resumeId: resumeId, 
+                resumeText: resume?.enhancedText || resume?.originalText,
+                jobRole: resume?.jobRole
+              }}
+            >
+              <Button variant="secondary">Practice Interview</Button>
+            </Link>
             <Link to={`/enhance/${resumeId}`}>
               <Button variant="primary">
                 {resume?.enhancedText ? 'Re-enhance' : 'Enhance'}
@@ -284,6 +299,33 @@ export default function ResumeView() {
                     </div>
                   )}
                 </div>
+                <div className="mb-4 flex gap-4">
+  <div>
+    <label className="block text-sm mb-1">Font Family</label>
+    <select
+      value={fontFamily}
+      onChange={(e) => setFontFamily(e.target.value)}
+      className="border rounded px-2 py-1"
+    >
+      <option value="Poppins">Poppins</option>
+      <option value="Arial">Arial</option>
+      <option value="Times New Roman">Times New Roman</option>
+    </select>
+  </div>
+
+  <div>
+    <label className="block text-sm mb-1">Font Size</label>
+    <select
+      value={fontSize}
+      onChange={(e) => setFontSize(e.target.value)}
+      className="border rounded px-2 py-1"
+    >
+      <option value="Small">Small</option>
+      <option value="Medium">Medium</option>
+      <option value="Large">Large</option>
+    </select>
+  </div>
+</div>
                 <div className="flex gap-2 flex-wrap">
                  <Button
   variant="primary"

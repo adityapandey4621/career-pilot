@@ -81,6 +81,14 @@ const STATUS_CONFIG = {
   interviewing: { label: 'Interviewing', color: 'bg-secondary/10 text-secondary border border-secondary/20', icon: MessageSquare },
   offered: { label: 'Offered', color: 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20', icon: CheckCircle2 }
 }
+const portfolioAnalytics = {
+  totalVisits: 1245,
+  uniqueVisitors: 876,
+  mostViewedSection: "Projects",
+  deviceStats: "65% Desktop",
+  downloads: 89,
+  weeklyGrowth: "+12%"
+}
 
 export default function Dashboard() {
   const [resumes, setResumes] = useState([])
@@ -286,7 +294,8 @@ export default function Dashboard() {
                 { to: '/hub/resume', icon: FileText, label: 'Resume Builder', desc: 'Create, parse, and optimize ATS resumes.', sub: `${resumes.length} resumes`, color: 'primary', badge: 'AI' },
                 { to: '/hub/jobs', icon: Briefcase, label: 'Job Finder', desc: 'Search jobs, set alerts, and track applications.', sub: `${jobStats.total} tracked`, color: 'primary' },
                 { to: '/hub/portfolio', icon: Globe, label: 'Portfolio Builder', desc: 'Sync repos and deploy portfolios instantly.', sub: `${portfolioCount} portfolios`, color: 'secondary' },
-                { to: '/hub/career', icon: GraduationCap, label: 'Career Growth', desc: 'AI mock interviews, email & profile tuning.', sub: '4 tools', color: 'emerald-500', badge: 'AI' },
+                { to: '/hub/career', icon: GraduationCap, label: 'Career Growth', desc: 'Email & profile tuning tools.', sub: 'Growth tools', color: 'emerald-500', badge: 'AI' },
+                { to: '/interview-prep', icon: Mic, label: 'AI Mock Interview', desc: 'Practice with AI and get real-time feedback.', sub: 'Practice', color: 'primary', badge: 'AI' },
                 { to: '/dashboard/analytics', icon: TrendingUp, label: 'Interview Analytics', desc: 'Visualize mock interview performance trends and scores.', sub: 'Real-time metrics', color: 'emerald-500', badge: 'AI' },
                 { to: '/hub/community', icon: Users, label: 'Community Hub', desc: 'Group chat, public posts, and direct DMs.', sub: 'Connect', color: 'primary' },
               ].map((hub, idx) => (
@@ -520,6 +529,77 @@ export default function Dashboard() {
       </div>
 
     </div>
+  </div>
+</motion.div>
+
+<motion.div variants={itemVariants} className="mb-10">
+  <div className="rounded-2xl bg-card border border-border p-6 shadow-sm">
+
+    <div className="flex items-center gap-3 mb-6">
+      <TrendingUp className="w-6 h-6 text-primary" />
+      <h2 className="text-xl font-black">
+        Portfolio Performance Analytics
+      </h2>
+    </div>
+
+    <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4">
+
+      <div className="p-4 rounded-xl border border-border">
+        <p className="text-xs text-muted-foreground">
+          Total Visits
+        </p>
+        <p className="text-2xl font-black">
+          {portfolioAnalytics.totalVisits}
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl border border-border">
+        <p className="text-xs text-muted-foreground">
+          Unique Visitors
+        </p>
+        <p className="text-2xl font-black">
+          {portfolioAnalytics.uniqueVisitors}
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl border border-border">
+        <p className="text-xs text-muted-foreground">
+          Most Viewed Section
+        </p>
+        <p className="font-bold">
+          {portfolioAnalytics.mostViewedSection}
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl border border-border">
+        <p className="text-xs text-muted-foreground">
+          Device Stats
+        </p>
+        <p className="font-bold">
+          {portfolioAnalytics.deviceStats}
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl border border-border">
+        <p className="text-xs text-muted-foreground">
+          Downloads
+        </p>
+        <p className="text-2xl font-black">
+          {portfolioAnalytics.downloads}
+        </p>
+      </div>
+
+      <div className="p-4 rounded-xl border border-border">
+        <p className="text-xs text-muted-foreground">
+          Weekly Growth
+        </p>
+        <p className="text-2xl font-black text-emerald-500">
+          {portfolioAnalytics.weeklyGrowth}
+        </p>
+      </div>
+
+    </div>
+
   </div>
 </motion.div>
 
