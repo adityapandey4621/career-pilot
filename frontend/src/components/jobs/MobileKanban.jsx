@@ -346,6 +346,13 @@ function KanbanColumn({ column, jobs, onDelete }) {
   );
 }
 
+/** Touch-friendly Kanban board for tracking job applications on mobile.
+ * @param {Object}        props
+ * @param {Array}         props.initialJobs         - Pre-loaded jobs (controlled mode; skips API fetch)
+ * @param {Function}      props.onStatusUpdate      - Callback when a job is dragged to a new column
+ * @param {Function}      props.onDelete            - Callback when a job card is removed
+ * @param {string}        props.className           - Additional CSS classes
+ */
 export default function MobileKanban({
   initialJobs,
   onStatusUpdate: externalOnStatusUpdate,
@@ -427,7 +434,7 @@ export default function MobileKanban({
         setStats(snapshot.stats);
       }
     }
-  }, [isControlled, currentUserId, loadJobTrackerSnapshot]);
+  }, [isControlled, currentUserId]);
 
   useEffect(() => {
     if (initialJobs) {
@@ -438,7 +445,7 @@ export default function MobileKanban({
       fetchJobs();
       fetchStats();
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (isControlled) return;
@@ -464,7 +471,7 @@ export default function MobileKanban({
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
-  }, [currentUserId, isControlled]);
+  }, [currentUserId, isControlled]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const queueOfflineStatusChange = useCallback(
     (jobId, newStatus, jobsSnapshot) => {
@@ -488,7 +495,7 @@ export default function MobileKanban({
     [currentUserId, persistTrackerSnapshot]
   );
 
-  const syncPendingStatusUpdates = useCallback(async () => {
+  const syncPendingStatusUpdates = async () => {
     if (isControlled || isSyncing) return;
     const queuedUpdates = getQueuedStatusUpdates(currentUserId);
     if (!queuedUpdates.length || !navigator.onLine) {
@@ -537,37 +544,7 @@ export default function MobileKanban({
         id: "mobile-kanban-offline-sync",
       });
     }
-  }, [currentUserId, isControlled, isSyncing]);
-
-  const handleStatusUpdate = useCallback(
-    async (jobId, newStatus) => {
-      const previousJobs = trackedJobs;
-
-      try {
-        await jobTrackerApi.updateStatus(jobId, newStatus);
-
-        const updatedJobs = previousJobs.map((job) =>
-          job.id === jobId
-            ? { ...job, status: newStatus, updatedAt: new Date() }
-            : job
-        );
-        setTrackedJobs(updatedJobs);
-        persistTrackerSnapshot(updatedJobs, calculateJobStats(updatedJobs));
-        toast.success("Status updated!");
-        if (!isControlled) fetchStats();
-      } catch (error) {
-        console.error("Error updating status:", error);
-        if (isNetworkError(error)) {
-          queueOfflineStatusChange(jobId, newStatus, previousJobs);
-        } else {
-          toast.error("Failed to update status", {
-            id: `mobile-kanban-update-error-${jobId}`,
-          });
-        }
-      }
-    },
-    [trackedJobs, isControlled, persistTrackerSnapshot, queueOfflineStatusChange, fetchStats]
-  );
+  };
 
   const handleDelete = useCallback(
     async (jobId) => {
