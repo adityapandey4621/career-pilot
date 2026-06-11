@@ -1,3 +1,11 @@
+## [1.215.1](https://github.com/anurag3407/career-pilot/compare/v1.215.0...v1.215.1) (2026-06-11)
+
+
+### Bug Fixes
+
+* remove extra closing brace causing syntax error in Enhance.jsx ([17cb643](https://github.com/anurag3407/career-pilot/commit/17cb6436952610d658fc16bba85ed2cb5d88ae87))
+* resolve merge conflict, keep upstream closing brace style ([e4cb662](https://github.com/anurag3407/career-pilot/commit/e4cb662492f61a529449c6398ed036851abefcb7))
+
 # [1.215.0](https://github.com/anurag3407/career-pilot/compare/v1.214.0...v1.215.0) (2026-06-11)
 
 
