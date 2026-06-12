@@ -2677,5 +2677,19 @@ export const templates = [
     "image": "/template-previews/Cloud_Nine_Aerial_Skyscape.png",
     "createdAt": "2026-06-10",
     "isComplete": true
+  },
+  {
+    "id": "Origami_Unfold_Step_Animation",
+    "title": "Origami Unfold Step Animation",
+    "category": "Portfolio",
+    "colorScheme": "Colorful",
+    "layout": "Interactive",
+    "author": "System",
+    "views": 1800,
+    "rating": 5.0,
+    "image": "/templates/Origami_Unfold_Step_Animation.png",
+    "createdAt": "2026-06-12",
+    "isComplete": true
   }
 ];
+

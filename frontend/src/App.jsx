@@ -117,6 +117,7 @@ import DigitalManifestoScroll from './components/portfolio/templates/Digital_Man
 import TestSocialLinks from './pages/TestSocialLinks';
 import ZineCollage from './components/portfolio/templates/ZineCollage';
 import TransparentDesktopOverlayOS from './components/portfolio/templates/Transparent_Desktop_Overlay_OS/index.jsx';
+import Origami_Unfold_Step_Animation from './components/portfolio/templates/Origami_Unfold_Step_Animation/index.jsx';
 
 function LoadingScreen({ label }) {
   return (
@@ -285,6 +286,7 @@ function AppRoutes() {
         <Route path="/templates/chatbot" element={<ChatbotPortfolio />} /> 
         <Route path="/templates/glassmorphism" element={<GlassmorphismTemplate/>} />
         <Route path="/templates/transparent-desktop-overlay-os" element={<TransparentDesktopOverlayOS />} />
+        <Route path="/templates/origami-unfold-step-animation" element={<Origami_Unfold_Step_Animation />} />
         {/* Core Protected Routes */}
         <Route 
   path="/dashboard" 
