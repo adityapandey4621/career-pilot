@@ -1,3 +1,10 @@
+# [1.235.0](https://github.com/anurag3407/career-pilot/compare/v1.234.0...v1.235.0) (2026-06-13)
+
+
+### Features
+
+* add Cartographer Antiquity Map Room template (fixes [#3212](https://github.com/anurag3407/career-pilot/issues/3212)) ([3ce340f](https://github.com/anurag3407/career-pilot/commit/3ce340f339dc013a84ae26fd420411d739aa34fb))
+
 # [1.234.0](https://github.com/anurag3407/career-pilot/compare/v1.233.0...v1.234.0) (2026-06-13)
 
 
