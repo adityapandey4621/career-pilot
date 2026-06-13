@@ -1,3 +1,10 @@
+## [1.232.1](https://github.com/anurag3407/career-pilot/compare/v1.232.0...v1.232.1) (2026-06-13)
+
+
+### Bug Fixes
+
+* add missing AI feedback fields to answerSchema ([#3484](https://github.com/anurag3407/career-pilot/issues/3484)) ([80e0d56](https://github.com/anurag3407/career-pilot/commit/80e0d56c65d777d8903b00059111786935556b92))
+
 # [1.232.0](https://github.com/anurag3407/career-pilot/compare/v1.231.1...v1.232.0) (2026-06-13)
 
 
