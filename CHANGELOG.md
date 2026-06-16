@@ -1,3 +1,10 @@
+## [1.248.3](https://github.com/anurag3407/career-pilot/compare/v1.248.2...v1.248.3) (2026-06-16)
+
+
+### Bug Fixes
+
+* remove accidental URL from .env.example header ([#3472](https://github.com/anurag3407/career-pilot/issues/3472)) ([91d196d](https://github.com/anurag3407/career-pilot/commit/91d196dd99f99a2289f91f2e2d43f1cfb87ba51e))
+
 ## [1.248.2](https://github.com/anurag3407/career-pilot/compare/v1.248.1...v1.248.2) (2026-06-16)
 
 ### Bug Fixes
