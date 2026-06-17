@@ -113,7 +113,7 @@ const ContentArea = ({ data, theme }) => {
         <div className="flex flex-col gap-6">
           
           {/* Work Experience with Vertical Marquee */}
-          <motion.div variants={itemVars} className="p-8 rounded-[32px] shadow-lg overflow-hidden relative h-[400px]" style={{ backgroundColor: theme.cardBg, border: `1px solid ${theme.border}` }}>
+          <motion.div variants={itemVars} className="p-8 rounded-[32px] shadow-lg overflow-hidden relative h-[450px]" style={{ backgroundColor: theme.cardBg, border: `1px solid ${theme.border}` }}>
             <h2 className="text-2xl font-extrabold mb-6 text-white absolute top-8 left-8 z-10 bg-[#13161F]/90 px-2 py-1 rounded">Work Experience</h2>
             
             {/* Top Fade */}

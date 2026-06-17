@@ -13,6 +13,16 @@ const Navbar = ({ name }) => {
     return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
+  const handleNavClick = (e, id) => {
+    e.preventDefault();
+    const element = document.querySelector(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      setActiveHash(id);
+      window.history.pushState(null, '', id);
+    }
+  };
+
   const navItems = [
     { id: '#home', label: 'Home' },
     { id: '#services', label: 'Services' },
@@ -22,9 +32,9 @@ const Navbar = ({ name }) => {
   ];
 
   return (
-    <nav className="flex items-center justify-between px-6 py-4 rounded-[32px] sticky top-8 z-50 shadow-xl transition-all font-sans" style={{ backgroundColor: '#13161F', border: '1px solid rgba(255,255,255,0.03)' }}>
+    <nav className="flex items-center justify-between px-6 py-4 rounded-[32px] sticky top-8 z-50 shadow-2xl transition-all font-sans" style={{ backgroundColor: 'rgba(19, 22, 31, 0.85)', backdropFilter: 'blur(16px)', border: '1px solid rgba(255,255,255,0.05)' }}>
       {/* Logo */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 cursor-pointer" onClick={(e) => handleNavClick(e, '#home')}>
         <div className="flex gap-1">
           <div className="w-2 h-6 bg-white rounded-sm"></div>
           <div className="w-2 h-6 bg-white/50 rounded-sm"></div>
@@ -36,15 +46,16 @@ const Navbar = ({ name }) => {
       </div>
 
       {/* Desktop Menu */}
-      <div className="hidden lg:flex items-center gap-1 p-1 rounded-full" style={{ backgroundColor: '#0E1018' }}>
+      <div className="hidden lg:flex items-center gap-1 p-1 rounded-full" style={{ backgroundColor: '#0E1018', border: '1px solid rgba(255,255,255,0.02)' }}>
         {navItems.map((item) => {
           const isActive = activeHash === item.id || (activeHash === '' && item.id === '#home');
           return (
             <a
               key={item.id}
               href={item.id}
+              onClick={(e) => handleNavClick(e, item.id)}
               className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'}`}
-              style={{ backgroundColor: isActive ? '#1A1F2C' : 'transparent' }}
+              style={{ backgroundColor: isActive ? '#1A1F2C' : 'transparent', boxShadow: isActive ? '0 4px 12px rgba(0,0,0,0.5)' : 'none' }}
             >
               {item.label}
             </a>
