@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Home, User, Briefcase, LayoutGrid, FileText, Mail, Sun, ChevronDown, Layers } from 'lucide-react';
 
-const Navbar = ({ activeTab, setActiveTab, name }) => {
+const Navbar = ({ name }) => {
   const [firstName, lastName] = (name || 'Dev Patel').split(' ');
+  const [activeHash, setActiveHash] = useState('#home');
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveHash(window.location.hash || '#home');
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
   const navItems = [
-    { id: 'Home', icon: Home, label: 'Home' },
-    { id: 'About', icon: User, label: 'About' },
-    { id: 'Services', icon: Layers, label: 'Services' },
-    { id: 'Works', icon: LayoutGrid, label: 'Works' },
-    { id: 'Blog', icon: FileText, label: 'Blog' },
-    { id: 'Contact', icon: Mail, label: 'Contact' }
+    { id: '#home', label: 'Home' },
+    { id: '#services', label: 'Services' },
+    { id: '#works', label: 'Works' },
+    { id: '#blogs', label: 'Blogs' },
+    { id: '#contact', label: "Let's Talk" }
   ];
 
   return (
-    <nav className="flex items-center justify-between px-6 py-4 rounded-[32px] sticky top-8 z-50 transition-all shadow-xl" style={{ backgroundColor: '#13161F', border: '1px solid rgba(255,255,255,0.03)' }}>
+    <nav className="flex items-center justify-between px-6 py-4 rounded-[32px] sticky top-8 z-50 shadow-xl transition-all font-sans" style={{ backgroundColor: '#13161F', border: '1px solid rgba(255,255,255,0.03)' }}>
       {/* Logo */}
       <div className="flex items-center gap-3">
         <div className="flex gap-1">
@@ -22,7 +30,7 @@ const Navbar = ({ activeTab, setActiveTab, name }) => {
           <div className="w-2 h-6 bg-white/50 rounded-sm"></div>
           <div className="w-2 h-6 bg-white/20 rounded-sm"></div>
         </div>
-        <span className="text-xl font-bold tracking-tight">
+        <span className="text-xl font-extrabold tracking-tight text-white">
           {firstName || 'Dev'}<span style={{ color: '#4770FF' }}>{lastName || 'Patel'}</span>
         </span>
       </div>
@@ -30,30 +38,34 @@ const Navbar = ({ activeTab, setActiveTab, name }) => {
       {/* Desktop Menu */}
       <div className="hidden lg:flex items-center gap-1 p-1 rounded-full" style={{ backgroundColor: '#0E1018' }}>
         {navItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = activeTab === item.id;
+          const isActive = activeHash === item.id || (activeHash === '' && item.id === '#home');
           return (
-            <button
+            <a
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'}`}
+              href={item.id}
+              className={`px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-300 ${isActive ? 'text-white' : 'text-slate-400 hover:text-slate-200'}`}
               style={{ backgroundColor: isActive ? '#1A1F2C' : 'transparent' }}
             >
-              <Icon size={16} className={isActive ? 'text-white' : 'text-slate-400'} />
               {item.label}
-            </button>
+            </a>
           );
         })}
       </div>
 
-      {/* Right Actions */}
-      <div className="flex items-center gap-6">
-        <button className="text-orange-500 hover:text-orange-400 transition-colors">
-          <Sun size={20} />
+      {/* Right side - Theme / Hire me */}
+      <div className="flex items-center gap-4">
+        <button className="p-2.5 rounded-full transition-colors hover:bg-white/10" style={{ backgroundColor: '#0E1018', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <Sun size={18} className="text-slate-300" />
         </button>
-        <button className="hidden sm:flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium transition-transform hover:scale-105" style={{ backgroundColor: '#1A1F2C', border: '1px solid rgba(255,255,255,0.05)' }}>
-          Let's Talk
-          <ChevronDown size={16} className="text-slate-400" />
+        <a 
+          href="#contact"
+          className="hidden md:flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold text-white transition-transform hover:scale-[1.02]" 
+          style={{ backgroundColor: '#4770FF' }}
+        >
+          Hire Me!
+        </a>
+        <button className="lg:hidden p-2.5 rounded-full transition-colors hover:bg-white/10 text-white" style={{ backgroundColor: '#0E1018', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <ChevronDown size={18} />
         </button>
       </div>
     </nav>
