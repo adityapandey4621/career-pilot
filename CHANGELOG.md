@@ -1,3 +1,10 @@
+# [1.250.0](https://github.com/anurag3407/career-pilot/compare/v1.249.0...v1.250.0) (2026-06-17)
+
+
+### Features
+
+* expand user profile schema and API with personal details and avatar management support ([0462c09](https://github.com/anurag3407/career-pilot/commit/0462c095df9de657821bd03068b6a9dd1339bc6f))
+
 # [1.249.0](https://github.com/anurag3407/career-pilot/compare/v1.248.5...v1.249.0) (2026-06-17)
 
 
