@@ -1,11 +1,33 @@
 import React from 'react';
 import { Phone, Copy, Linkedin, Github, MessageCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Sidebar = ({ data, theme }) => {
   const { personalInfo, contactInfo, socialLinks } = data || {};
 
+  // Typewriter animation variants
+  const sentence = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: { delay: 0.2, staggerChildren: 0.02 }
+    }
+  };
+  const letter = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 }
+  };
+  
+  const bioText = personalInfo?.summary || 'A passionate Developer 🛠️ who thrives on crafting robust, high-performance applications. With real-world experience from internships and personal projects, I love turning complex problems into clean, efficient solutions.';
+
   return (
-    <div className="rounded-[32px] p-6 shadow-2xl flex flex-col items-center sm:items-start text-center sm:text-left" style={{ backgroundColor: theme.cardBg, border: `1px solid ${theme.border}` }}>
+    <motion.div 
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="rounded-[32px] p-6 shadow-2xl flex flex-col items-center sm:items-start text-center sm:text-left" 
+      style={{ backgroundColor: theme.cardBg, border: `1px solid ${theme.border}` }}
+    >
       
       {/* Profile Image Wrapper */}
       <div className="w-full h-64 md:h-72 lg:h-64 rounded-2xl overflow-hidden mb-8 relative group">
@@ -21,9 +43,19 @@ const Sidebar = ({ data, theme }) => {
         {personalInfo?.name || 'Dev Patel'} <span className="animate-wave inline-block origin-[70%_70%]">👋</span>
       </h1>
       
-      <p className="text-base leading-relaxed mb-8" style={{ color: theme.textMuted }}>
-        {personalInfo?.summary || 'A passionate Developer 🛠️ who thrives on crafting robust, high-performance applications. With real-world experience from internships and personal projects, I love turning complex problems into clean, efficient solutions.'}
-      </p>
+      <motion.p 
+        className="text-base leading-relaxed mb-8" 
+        style={{ color: theme.textMuted }}
+        variants={sentence}
+        initial="hidden"
+        animate="visible"
+      >
+        {bioText.split("").map((char, index) => (
+          <motion.span key={char + "-" + index} variants={letter}>
+            {char}
+          </motion.span>
+        ))}
+      </motion.p>
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row w-full gap-4 mb-10">
@@ -62,7 +94,7 @@ const Sidebar = ({ data, theme }) => {
         )}
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes wave {
           0% { transform: rotate(0deg); }
           10% { transform: rotate(14deg); }
@@ -77,7 +109,7 @@ const Sidebar = ({ data, theme }) => {
           animation: wave 2.5s infinite;
         }
       `}</style>
-    </div>
+    </motion.div>
   );
 };
 
