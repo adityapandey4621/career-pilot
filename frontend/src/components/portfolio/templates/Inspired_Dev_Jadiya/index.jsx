@@ -535,7 +535,7 @@ export default function InspiredDevJadiya() {
                     activeItem.section === 'skills' && activeItem.index === index ? style.bgSelection : 'hover:bg-white/5'
                   }`}
                 >
-                  <span>🔧 {skill}</span>
+                  <span>🔧 {typeof skill === "string" ? skill : (skill?.name || "Skill")}</span>
                   <span className={`text-[9px] ${style.textMuted}`}>env_val_ready</span>
                 </div>
               ))}
@@ -627,7 +627,7 @@ export default function InspiredDevJadiya() {
               <div className="space-y-4 animate-fadeIn">
                 <div className="border-b pb-2 border-[#21262d]">
                   <span className={`text-[10px] uppercase ${style.textHighlight}`}>Environment Variables</span>
-                  <h2 className="text-xl font-bold">🛠️ {skills[activeItem.index]}</h2>
+                  <h2 className="text-xl font-bold">🛠️ {typeof skills[activeItem.index] === "string" ? skills[activeItem.index] : (skills[activeItem.index]?.name || "Skill")}</h2>
                 </div>
                 <p className="text-sm leading-relaxed">
                   This technology/capability is registered inside the primary development environment with the status <span className="text-emerald-500 font-bold">ACTIVE</span>. Fully integrated and utilized across multiple production architectures and active systems.
