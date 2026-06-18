@@ -8,10 +8,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Sun, ChevronDown, Check, Eye, Star, Sparkles, X } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import MorphingBlobs from "../components/portfolio/templates/Morphing_Blobs/index";
+import InspiredSheryians from "../components/portfolio/templates/Inspired_Sheryians_Coding_School/index";
+import InspiredLukas from "../components/portfolio/templates/Inspired_Lukas/index";
 import InspiredClydeDSouza from "../components/portfolio/templates/Inspired_Clyde_DSouza/index";
 import InspiredDelba from "../components/portfolio/templates/Inspired_Delba/index";
 import InspiredClaudiaFreitas from "../components/portfolio/templates/Inspired_Claudia_Freitas/index";
+import InspiredDevJadiya from "../components/portfolio/templates/Inspired_Dev_Jadiya/index";
 import InspiredDebasishDutta from "../components/portfolio/templates/Inspired_Debasish_Dutta/index";
+import InspiredDanielPeace from "../components/portfolio/templates/Inspired_Daniel_Peace/index";
 
 /* TemplatePreviewFrame — contains each full portfolio template in a
    sandboxed scrollable box. The key trick: CSS `transform` on the outer
@@ -47,10 +51,6 @@ function TemplatePreviewFrame({ label, badgeColor, children }) {
     </div>
   );
 }
-// import Hero from "../components/portfolio/templates/Holographic/Hero";
-// import ChooseAdventurePortfolio from "../components/portfolio/templates/Choose_Adventure/index";
-// import RetroProjects from "../components/portfolio/templates/2D_Retro_8bit/Projects";
-// import FantasyRPGProjects from "../components/portfolio/templates/Fantasy_RPG/Projects";
 
 
 function FilterSelect({ value, onChange, options, className = "" }) {
@@ -587,8 +587,6 @@ export default function TemplateGallery() {
           onDeploySuccess={clearDraft}
         />
 
-
-
       </div>
 
       {/* Inspired Clyde DSouza - sandboxed fixed-nav frame */}
@@ -633,6 +631,20 @@ export default function TemplateGallery() {
         </div>
       </div>
 
+      {/* Inspired Dev Jadiya - sandboxed fixed-nav frame */}
+      <div className="mt-12">
+        <div className="mb-4 flex items-center gap-3 px-1">
+          <span className="rounded-full bg-cyan-500/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-cyan-500 border border-cyan-500/25">
+            💻 Dev Jadiya Inspired
+          </span>
+          <h2 className="text-lg font-semibold text-foreground/70">Inspired by Dev Jadiya - Developer Portfolio</h2>
+        </div>
+        <div className="rounded-2xl border border-cyan-500/15"
+          style={{ height: 640, overflowY: "auto", overflowX: "hidden", transform: "translate(0)", position: "relative", backgroundColor: "#0f172a" }}>
+          <InspiredDevJadiya />
+        </div>
+      </div>
+
       {/* Inspired Debasish Dutta - sandboxed fixed-nav frame */}
       <div className="mt-12">
         <div className="mb-4 flex items-center gap-3 px-1">
@@ -647,8 +659,20 @@ export default function TemplateGallery() {
         </div>
       </div>
 
+      {/* Inspired Daniel Peace - sandboxed fixed-nav frame */}
+      <div className="mt-12">
+        <div className="mb-4 flex items-center gap-3 px-1">
+          <span className="rounded-full bg-cyan-500/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-cyan-500 border border-cyan-500/25">
+            🐱 Daniel Peace Inspired
+          </span>
+          <h2 className="text-lg font-semibold text-foreground/70">Inspired by Daniel Peace - Brutalist Minimalist</h2>
+        </div>
+        <div className="rounded-2xl border border-cyan-500/15"
+          style={{ height: 640, overflowY: "auto", overflowX: "hidden", transform: "translate(0)", position: "relative", backgroundColor: "#020617" }}>
+          <InspiredDanielPeace />
+        </div>
+      </div>
+
     </div>
   );
 }
-      
-       

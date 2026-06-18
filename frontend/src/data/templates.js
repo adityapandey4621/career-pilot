@@ -1,5 +1,19 @@
 export const templates = [
   {
+    "id": "Inspired_Daniel_Peace",
+    "title": "Daniel Peace Inspired",
+    "category": "Portfolio",
+    "colorScheme": "Dark",
+    "layout": "Minimal",
+    "author": "Anurag Mishra",
+    "views": 2500,
+    "rating": 5,
+    "image": "/template-previews/Inspired_Daniel_Peace.png",
+    "createdAt": "2026-06-19",
+    "description": "A brutalist-minimalist developer portfolio inspired by Daniel Peace, featuring high legibility, a cyber-lab dark theme, and interactive cat images.",
+    "isComplete": true
+  },
+  {
     "id": "Inspired_Debasish_Dutta",
     "title": "Debasish Dutta Inspired",
     "category": "Portfolio",
