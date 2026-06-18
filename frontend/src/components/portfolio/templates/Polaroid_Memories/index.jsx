@@ -1,4 +1,5 @@
 import React from 'react';
+import data from '../../../../data/dummy_data.json';
 import { motion } from 'framer-motion';
 import { 
   Github, Linkedin, Twitter, Mail, MapPin, 

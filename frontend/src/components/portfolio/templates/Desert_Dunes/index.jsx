@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import data from '../../../../data/dummy_data.json';
 import { motion, useScroll, useTransform, AnimatePresence, useInView } from 'framer-motion';
 import {
   Github,
