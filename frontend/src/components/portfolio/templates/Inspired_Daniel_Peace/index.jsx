@@ -29,7 +29,10 @@ const InspiredDanielPeace = () => {
   const currentCat = catImages[catIndex];
 
   return (
-    <div className="min-h-full bg-[#020617] text-[#f1f5f9] font-mono selection:bg-[#22d3ee] selection:text-[#020617] py-16">
+    <div 
+      className="min-h-full bg-[#020617] text-[#f1f5f9] selection:bg-[#22d3ee] selection:text-[#020617] py-16"
+      style={{ fontFamily: "'JetBrains Mono', 'Fira Code', 'Courier New', Courier, monospace" }}
+    >
       <div className="max-w-[700px] mx-auto px-6 space-y-16">
         
         {/* Header / Hero Section */}
@@ -75,20 +78,18 @@ const InspiredDanielPeace = () => {
           <div className="flex flex-col items-end">
             <div className="w-40 h-48 overflow-hidden rounded shadow-sm bg-[#475569]/20 border border-[#475569]/30">
               <img 
-                src={personal.avatar || currentCat} 
-                alt="Profile or Cat" 
+                src={currentCat} 
+                alt="Cat" 
                 className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
                 onClick={handleCatClick}
               />
             </div>
-            {!personal.avatar && (
-              <span 
-                className="text-xs text-[#f1f5f9] mt-2 cursor-pointer hover:underline lowercase"
-                onClick={handleCatClick}
-              >
-                click me
-              </span>
-            )}
+            <span 
+              className="text-xs text-[#f1f5f9] mt-2 cursor-pointer hover:underline lowercase"
+              onClick={handleCatClick}
+            >
+              click me
+            </span>
           </div>
         </header>
 
@@ -122,7 +123,9 @@ const InspiredDanielPeace = () => {
                     {project.description?.split('.')[0] || "minimal project description"}
                   </p>
                   <p className="text-xs text-[#475569] lowercase mt-1">
-                    {project.technologies ? project.technologies.join(', ') : "react, tailwindcss"}
+                    {Array.isArray(project.technologies || project.techStack) 
+                      ? (project.technologies || project.techStack).join(', ') 
+                      : (project.technologies || project.techStack || "react, tailwindcss")}
                   </p>
                 </div>
               )) : (
