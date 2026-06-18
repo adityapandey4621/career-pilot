@@ -5,7 +5,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // In your local project repository, uncomment the line below to connect 
 // the template to your live database profile data context:
 // 
-//import { usePortfolio } from '../../../../context/PortfolioContext';
+import { usePortfolio } from '../../../../context/PortfolioContext';
 // =========================================================================
 
 const fallbackPortfolioData = {
