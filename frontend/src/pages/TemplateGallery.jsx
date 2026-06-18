@@ -8,8 +8,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Sun, ChevronDown, Check, Eye, Star, Sparkles, X } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
 import MorphingBlobs from "../components/portfolio/templates/Morphing_Blobs/index";
-import InspiredSheryians from "../components/portfolio/templates/Inspired_Sheryians_Coding_School/index";
-import InspiredLukas from "../components/portfolio/templates/Inspired_Lukas/index";
 import InspiredClydeDSouza from "../components/portfolio/templates/Inspired_Clyde_DSouza/index";
 import InspiredDelba from "../components/portfolio/templates/Inspired_Delba/index";
 import InspiredClaudiaFreitas from "../components/portfolio/templates/Inspired_Claudia_Freitas/index";
