@@ -256,7 +256,7 @@ function Dynamic3DCanvas({ themeColor }) {
 export default function InspiredDevJadiya() {
   // Use fallbacks automatically to keep compilation safe in preview environments
   const hookInstance = usePortfolio?.();
-  const data = hookInstance?.portfolioData || fallbackPortfolioData;
+  data = hookInstance?.portfolioData || fallbackPortfolioData;
 
   const [theme, setTheme] = useState('tokyonight');
   const [activeItem, setActiveItem] = useState({ section: 'home', index: 0 });

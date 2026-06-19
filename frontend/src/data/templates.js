@@ -1,57 +1,6 @@
 export const templates = [
   {
-    "id": "Inspired_Debasish_Dutta",
-    "title": "Debasish Dutta Inspired",
-    "category": "Portfolio",
-    "colorScheme": "Dark",
-    "layout": "Interactive",
-    "author": "Anurag Mishra",
-    "views": 4500,
-    "rating": 5,
-    "image": "/template-previews/Inspired_Debasish_Dutta.png",
-    "createdAt": "2026-06-18",
-    "description": "A dark-themed developer portfolio inspired by Debasish Dutta, featuring a split layout with a fixed profile sidebar and a dynamic tabbed content area.",
-    "isComplete": true
-  },
-  {
-    "id": "Typewriter_Keystroke_Sequence",
-    "title": "Typewriter Keystroke Sequence",
-    "category": "Portfolio",
-    "colorScheme": "Light",
-    "layout": "Scroll",
-    "author": "Raman Kumar",
-    "views": 9999990,
-    "rating": 5,
-    "image": "/template-previews/Typewriter_Keystroke_Sequence.png",
-    "createdAt": "2026-06-15",
-    "description": "A vintage typewriter portfolio where your career story is typed live on old manuscript paper — complete with keystroke animations, ink smudges, diary entries, and folded letters.",
-    "isComplete": true
-  },
-  {
-    "id": "Sommelier_Wine_Cellar_Racks",
-    "title": "Sommelier Wine Cellar Racks",
-    "category": "Portfolio",
-    "colorScheme": "Dark",
-    "layout": "Interactive",
-    "author": "System",
-    "views": 999999,
-    "rating": 5,
-    "image": "/templates/Sommelier_Wine_Cellar_Racks.png",
-    "createdAt": "2026-06-14",
-    "isComplete": true
-  },
-  {
-    "id": "Michelin_Star_Chef_Plating",
-    "title": "Michelin Star Chef Plating",
-    "category": "Portfolio",
-    "colorScheme": "Dark",
-    "layout": "Interactive",
-    "author": "System",
-    "views": 0,
-    "rating": 5,
-    "image": "/templates/Michelin_Star_Chef_Plating.png",
-    "createdAt": "2026-06-14",
-    "isComplete": true
+
   },
   {
     "id": "Zen_Bamboo_Forest_Wind",
