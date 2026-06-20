@@ -1,3 +1,10 @@
+# [1.253.0](https://github.com/anurag3407/career-pilot/compare/v1.252.0...v1.253.0) (2026-06-20)
+
+
+### Features
+
+* add AI-powered resume bullet point enhancer ([#4221](https://github.com/anurag3407/career-pilot/issues/4221)) ([1b35e32](https://github.com/anurag3407/career-pilot/commit/1b35e32c5eb3a92645ee61c1af53787ec44c47e0))
+
 # [1.252.0](https://github.com/anurag3407/career-pilot/compare/v1.251.1...v1.252.0) (2026-06-20)
 
 
