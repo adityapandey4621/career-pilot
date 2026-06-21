@@ -1,3 +1,10 @@
+# [1.258.0](https://github.com/anurag3407/career-pilot/compare/v1.257.0...v1.258.0) (2026-06-21)
+
+
+### Features
+
+* aquatic bioluminescent theme template ([#4129](https://github.com/anurag3407/career-pilot/issues/4129)) ([785a7dc](https://github.com/anurag3407/career-pilot/commit/785a7dcce918ac9687d2b5982979d2132277c4bd))
+
 # [1.257.0](https://github.com/anurag3407/career-pilot/compare/v1.256.0...v1.257.0) (2026-06-21)
 
 
