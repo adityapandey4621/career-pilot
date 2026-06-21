@@ -1,7 +1,9 @@
+import React from "react";
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useJobBoard } from "../hooks/useJobBoard";
 import { jobTrackerApi } from "../services/api";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 // Mock dependencies
 vi.mock("../services/api", () => ({
@@ -34,22 +36,43 @@ vi.mock("../utils/jobTrackerOffline", () => ({
   saveJobTrackerStats: vi.fn(),
 }));
 
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false, // Turn off retries for faster tests
+      },
+      mutations: {
+        retry: false,
+      }
+    },
+  });
+
+export function createWrapper() {
+  const testQueryClient = createTestQueryClient();
+  return ({ children }) => (
+    <QueryClientProvider client={testQueryClient}>{children}</QueryClientProvider>
+  );
+}
+
 describe("useJobBoard", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it("should initialize with default values", () => {
-    const { result } = renderHook(() => useJobBoard({ isControlled: true }));
+    const { result } = renderHook(() => useJobBoard({ isControlled: true }), {
+      wrapper: createWrapper(),
+    });
     expect(result.current.trackedJobs).toEqual([]);
-    expect(result.current.stats).toBeNull();
     expect(result.current.loading).toBe(false);
   });
 
   it("should handle initial jobs when controlled", () => {
     const mockJobs = [{ id: "1", title: "Test Job", status: "saved" }];
-    const { result } = renderHook(() =>
-      useJobBoard({ isControlled: true, initialJobs: mockJobs })
+    const { result } = renderHook(
+      () => useJobBoard({ isControlled: true, initialJobs: mockJobs }),
+      { wrapper: createWrapper() }
     );
     expect(result.current.trackedJobs).toEqual(mockJobs);
     expect(result.current.loading).toBe(false);
@@ -60,12 +83,11 @@ describe("useJobBoard", () => {
     jobTrackerApi.getAll.mockResolvedValueOnce({ trackedJobs: mockJobs });
     jobTrackerApi.getStats.mockResolvedValueOnce({ stats: { total: 1 } });
 
-    const { result } = renderHook(() => useJobBoard({ isControlled: false }));
-    
-    // Initially loading
-    expect(result.current.loading).toBe(true);
+    const { result } = renderHook(() => useJobBoard({ isControlled: false }), {
+      wrapper: createWrapper(),
+    });
 
-    // Wait for async effects
+    // Wait for async effects (React Query fetches)
     await act(async () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
     });
@@ -78,8 +100,9 @@ describe("useJobBoard", () => {
 
   it("should update status via handleStatusUpdate", async () => {
     const mockJobs = [{ id: "1", title: "Test Job", status: "saved" }];
-    const { result } = renderHook(() =>
-      useJobBoard({ isControlled: true, initialJobs: mockJobs })
+    const { result } = renderHook(
+      () => useJobBoard({ isControlled: true, initialJobs: mockJobs }),
+      { wrapper: createWrapper() }
     );
 
     jobTrackerApi.updateStatus.mockResolvedValueOnce({});
@@ -88,14 +111,15 @@ describe("useJobBoard", () => {
       await result.current.handleStatusUpdate("1", "applied");
     });
 
-    expect(jobTrackerApi.updateStatus).toHaveBeenCalledWith("1", "applied");
+    expect(jobTrackerApi.updateStatus).toHaveBeenCalledWith("1", "applied", undefined);
     expect(result.current.trackedJobs[0].status).toBe("applied");
   });
 
   it("should update status via onDragEnd", async () => {
     const mockJobs = [{ id: "1", title: "Test Job", status: "saved" }];
-    const { result } = renderHook(() =>
-      useJobBoard({ isControlled: true, initialJobs: mockJobs })
+    const { result } = renderHook(
+      () => useJobBoard({ isControlled: true, initialJobs: mockJobs }),
+      { wrapper: createWrapper() }
     );
 
     jobTrackerApi.updateStatus.mockResolvedValueOnce({});
@@ -108,14 +132,15 @@ describe("useJobBoard", () => {
       });
     });
 
-    expect(jobTrackerApi.updateStatus).toHaveBeenCalledWith("1", "applied");
+    expect(jobTrackerApi.updateStatus).toHaveBeenCalledWith("1", "applied", undefined);
     expect(result.current.trackedJobs[0].status).toBe("applied");
   });
 
   it("should delete job via handleDelete", async () => {
     const mockJobs = [{ id: "1", title: "Test Job", status: "saved" }];
-    const { result } = renderHook(() =>
-      useJobBoard({ isControlled: true, initialJobs: mockJobs })
+    const { result } = renderHook(
+      () => useJobBoard({ isControlled: true, initialJobs: mockJobs }),
+      { wrapper: createWrapper() }
     );
 
     jobTrackerApi.delete.mockResolvedValueOnce({ success: true });

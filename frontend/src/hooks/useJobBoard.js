@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { toast } from "react-hot-toast";
 import { jobTrackerApi } from "../services/api";
 import { auth } from "../config/firebase";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   calculateJobStats,
   getQueuedStatusUpdates,
@@ -25,9 +26,9 @@ function isUnrecoverableStatusUpdateError(error) {
 }
 
 export function useJobBoard({ initialJobs, isControlled } = {}) {
-  const [trackedJobs, setTrackedJobs] = useState(initialJobs || []);
-  const [stats, setStats] = useState(isControlled && initialJobs ? calculateJobStats(initialJobs) : null);
-  const [loading, setLoading] = useState(!isControlled);
+  const queryClient = useQueryClient();
+  const currentUserId = auth?.currentUser?.uid || "anonymous";
+
   const [updateLoading, setUpdateLoading] = useState({});
   const [isOffline, setIsOffline] = useState(
     typeof navigator !== "undefined" ? !navigator.onLine : false
@@ -35,17 +36,15 @@ export function useJobBoard({ initialJobs, isControlled } = {}) {
   const [lastSyncedAt, setLastSyncedAt] = useState(null);
   const [pendingSyncCount, setPendingSyncCount] = useState(0);
 
-  const currentUserId = auth?.currentUser?.uid || "anonymous";
-
-  const loadCachedTrackerData = useCallback(() => {
+  // Fallback to local storage cache 
+  const getCachedJobs = useCallback(() => {
     const snapshot = loadJobTrackerSnapshot(currentUserId);
-    if (!snapshot) return false;
+    return snapshot ? (snapshot.trackedJobs || []) : [];
+  }, [currentUserId]);
 
-    const cachedJobs = snapshot.trackedJobs || [];
-    setTrackedJobs(cachedJobs);
-    setStats(snapshot.stats || calculateJobStats(cachedJobs));
-    setLastSyncedAt(snapshot.lastSyncedAt || null);
-    return true;
+  const getCachedStats = useCallback(() => {
+    const snapshot = loadJobTrackerSnapshot(currentUserId);
+    return snapshot ? (snapshot.stats || calculateJobStats([])) : calculateJobStats([]);
   }, [currentUserId]);
 
   const persistTrackerSnapshot = useCallback((jobs, nextStats = null) => {
@@ -54,47 +53,35 @@ export function useJobBoard({ initialJobs, isControlled } = {}) {
     return snapshot;
   }, [currentUserId]);
 
-  const fetchStats = useCallback(async () => {
-    if (isControlled) return;
-    try {
-      const data = await jobTrackerApi.getStats();
-      setStats(data.stats);
-      const snapshot = saveJobTrackerStats(currentUserId, data.stats);
-      setLastSyncedAt(snapshot.lastSyncedAt);
-    } catch (error) {
-      console.error("Error fetching stats:", error);
-      const snapshot = loadJobTrackerSnapshot(currentUserId);
-      if (snapshot?.stats) {
-        setStats(snapshot.stats);
-      }
-    }
-  }, [currentUserId]);
-
-  const fetchJobs = useCallback(async () => {
-    if (isControlled) return;
-    try {
-      setLoading(true);
+  // Queries
+  const { data: trackedJobs = getCachedJobs(), isLoading: jobsLoading, refetch: fetchJobs } = useQuery({
+    queryKey: ['trackedJobs', currentUserId],
+    queryFn: async () => {
       const data = await jobTrackerApi.getAll();
       const jobs = data.trackedJobs || [];
-      setTrackedJobs(jobs);
       persistTrackerSnapshot(jobs, calculateJobStats(jobs));
       setIsOffline(false);
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
-      const hasCachedData = loadCachedTrackerData();
-      if (hasCachedData) {
-        setIsOffline(true);
-        toast("Showing saved Job Tracker data while offline", {
-          id: "tracked-jobs-offline-cache",
-        });
-      } else {
-        toast.error("Failed to load tracked jobs", { id: "tracked-jobs-load-error" });
-      }
-    } finally {
-      setLoading(false);
-    }
-  }, [loadCachedTrackerData, persistTrackerSnapshot]);
+      return jobs;
+    },
+    enabled: !isControlled,
+    initialData: initialJobs,
+  });
 
+  const { data: stats = getCachedStats(), refetch: fetchStats } = useQuery({
+    queryKey: ['jobStats', currentUserId],
+    queryFn: async () => {
+      const data = await jobTrackerApi.getStats();
+      const snapshot = saveJobTrackerStats(currentUserId, data.stats);
+      setLastSyncedAt(snapshot.lastSyncedAt);
+      return data.stats;
+    },
+    enabled: !isControlled,
+    initialData: isControlled && initialJobs ? calculateJobStats(initialJobs) : undefined,
+  });
+
+  const loading = jobsLoading && !initialJobs;
+
+  // Offline queue helper
   const queueOfflineStatusChange = useCallback((jobId, newStatus, jobsSnapshot) => {
     const updatedJobs = jobsSnapshot.map((job) =>
       job.id === jobId
@@ -104,16 +91,141 @@ export function useJobBoard({ initialJobs, isControlled } = {}) {
     const offlineStats = calculateJobStats(updatedJobs);
     const queue = queueStatusUpdate(currentUserId, jobId, newStatus);
 
-    setTrackedJobs(updatedJobs);
-    setStats(offlineStats);
+    queryClient.setQueryData(['trackedJobs', currentUserId], updatedJobs);
+    queryClient.setQueryData(['jobStats', currentUserId], offlineStats);
     setPendingSyncCount(queue.length);
     setIsOffline(true);
     persistTrackerSnapshot(updatedJobs, offlineStats);
     toast.success("Status saved offline. It will sync when you reconnect.", {
       id: `tracked-job-offline-update-${jobId}`,
     });
-  }, [currentUserId, persistTrackerSnapshot]);
+  }, [currentUserId, persistTrackerSnapshot, queryClient]);
 
+  // Mutations
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ jobId, newStatus, note }) => jobTrackerApi.updateStatus(jobId, newStatus, note),
+    onMutate: async ({ jobId, newStatus }) => {
+      await queryClient.cancelQueries({ queryKey: ['trackedJobs', currentUserId] });
+      await queryClient.cancelQueries({ queryKey: ['jobStats', currentUserId] });
+
+      const previousJobs = queryClient.getQueryData(['trackedJobs', currentUserId]) || [];
+      const updatedJobs = previousJobs.map((job) =>
+        job.id === jobId
+          ? { ...job, status: newStatus, updatedAt: new Date().toISOString() }
+          : job
+      );
+
+      queryClient.setQueryData(['trackedJobs', currentUserId], updatedJobs);
+      const newStats = calculateJobStats(updatedJobs);
+      queryClient.setQueryData(['jobStats', currentUserId], newStats);
+      persistTrackerSnapshot(updatedJobs, newStats);
+
+      return { previousJobs };
+    },
+    onError: (err, variables, context) => {
+      console.error("Error updating status:", err);
+      if (isNetworkError(err)) {
+        queueOfflineStatusChange(variables.jobId, variables.newStatus, context.previousJobs);
+      } else {
+        toast.error("Failed to update status");
+        queryClient.setQueryData(['trackedJobs', currentUserId], context.previousJobs);
+        const prevStats = calculateJobStats(context.previousJobs);
+        queryClient.setQueryData(['jobStats', currentUserId], prevStats);
+        persistTrackerSnapshot(context.previousJobs, prevStats);
+      }
+    },
+    onSettled: (data, error, variables) => {
+      setUpdateLoading((prev) => ({ ...prev, [variables.jobId]: false }));
+      if (!error || isNetworkError(error)) {
+        // If success, we already updated optimistically, but let's invalidate to be safe if online
+        if (!isNetworkError(error)) {
+          toast.success("Status updated!");
+          queryClient.invalidateQueries({ queryKey: ['jobStats', currentUserId] });
+        }
+      }
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (jobId) => jobTrackerApi.delete(jobId),
+    onMutate: async (jobId) => {
+      await queryClient.cancelQueries({ queryKey: ['trackedJobs', currentUserId] });
+      const previousJobs = queryClient.getQueryData(['trackedJobs', currentUserId]) || [];
+      const updatedJobs = previousJobs.filter((job) => job.id !== jobId);
+      
+      queryClient.setQueryData(['trackedJobs', currentUserId], updatedJobs);
+      queryClient.setQueryData(['jobStats', currentUserId], calculateJobStats(updatedJobs));
+      persistTrackerSnapshot(updatedJobs, calculateJobStats(updatedJobs));
+      
+      return { previousJobs };
+    },
+    onError: (err, jobId, context) => {
+      console.error("Error deleting job:", err);
+      toast.error("Failed to remove job");
+      queryClient.setQueryData(['trackedJobs', currentUserId], context.previousJobs);
+      queryClient.setQueryData(['jobStats', currentUserId], calculateJobStats(context.previousJobs));
+      persistTrackerSnapshot(context.previousJobs, calculateJobStats(context.previousJobs));
+    },
+    onSuccess: () => {
+      toast.success("Job removed from tracker");
+      queryClient.invalidateQueries({ queryKey: ['jobStats', currentUserId] });
+    }
+  });
+
+  const saveNoteMutation = useMutation({
+    mutationFn: async ({ jobId, noteContent }) => {
+      const job = trackedJobs.find((j) => j.id === jobId);
+      if (!job) throw new Error("Job not found");
+      await jobTrackerApi.updateStatus(jobId, job.status, noteContent);
+      return { jobId, noteContent };
+    },
+    onSuccess: ({ jobId, noteContent }) => {
+      const newNote = { content: noteContent, createdAt: new Date().toISOString() };
+      queryClient.setQueryData(['trackedJobs', currentUserId], (old) => {
+        const updated = (old || []).map((j) =>
+          j.id === jobId ? { ...j, notes: [...(j.notes || []), newNote] } : j
+        );
+        persistTrackerSnapshot(updated, calculateJobStats(updated));
+        return updated;
+      });
+      toast.success("Note saved!");
+    },
+    onError: (err) => {
+      console.error("Error saving note:", err);
+      toast.error("Failed to save note");
+    }
+  });
+
+  // Action Handlers
+  const handleStatusUpdate = useCallback(async (jobId, newStatus) => {
+    setUpdateLoading((prev) => ({ ...prev, [jobId]: true }));
+    updateStatusMutation.mutate({ jobId, newStatus });
+  }, [updateStatusMutation]);
+
+  const onDragEnd = useCallback(async (result) => {
+    const { destination, source, draggableId } = result;
+    if (!destination) return;
+    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+    updateStatusMutation.mutate({ jobId: draggableId, newStatus: destination.droppableId });
+  }, [updateStatusMutation]);
+
+  const handleDelete = useCallback(async (jobId) => {
+    if (!window.confirm("Are you sure you want to remove this job from your tracker?")) return;
+    deleteMutation.mutate(jobId);
+  }, [deleteMutation]);
+
+  const handleSaveNote = useCallback(async (jobId, noteContent) => {
+    const trimmed = noteContent.trim();
+    if (!trimmed) return false;
+    try {
+      await saveNoteMutation.mutateAsync({ jobId, noteContent: trimmed });
+      return true;
+    } catch {
+      return false;
+    }
+  }, [saveNoteMutation]);
+
+  // Sync logic
   const syncPendingStatusUpdates = useCallback(async () => {
     if (isControlled) return;
     const queuedUpdates = getQueuedStatusUpdates(currentUserId);
@@ -132,7 +244,6 @@ export function useJobBoard({ initialJobs, isControlled } = {}) {
         await jobTrackerApi.updateStatus(update.jobId, update.status);
         syncedIds.push(update.id);
       } catch (error) {
-        console.error("Error syncing offline job update:", error);
         if (isNetworkError(error)) {
           stoppedForNetwork = true;
           break;
@@ -152,165 +263,25 @@ export function useJobBoard({ initialJobs, isControlled } = {}) {
 
     setPendingSyncCount(remainingUpdates.length);
 
-    if (failedCount) {
-      toast.error("Some offline updates could not be synced and will be retried");
-    } else if (discardedCount) {
-      toast.error("Some offline updates could not be applied");
-    } else if (syncedIds.length && !stoppedForNetwork) {
-      toast.success("Offline Job Tracker changes synced", {
-        id: "tracked-job-offline-sync",
-      });
+    if (failedCount) toast.error("Some offline updates could not be synced and will be retried");
+    else if (discardedCount) toast.error("Some offline updates could not be applied");
+    else if (syncedIds.length && !stoppedForNetwork) {
+      toast.success("Offline Job Tracker changes synced", { id: "tracked-job-offline-sync" });
     }
-  }, [currentUserId]);
+  }, [currentUserId, isControlled]);
 
-  const handleStatusUpdate = useCallback(async (jobId, newStatus) => {
-    const previousJobs = trackedJobs;
-
-    try {
-      setUpdateLoading((prev) => ({ ...prev, [jobId]: true }));
-      await jobTrackerApi.updateStatus(jobId, newStatus);
-
-      const updatedJobs = previousJobs.map((job) =>
-        job.id === jobId
-          ? { ...job, status: newStatus, updatedAt: new Date().toISOString() }
-          : job
-      );
-      setTrackedJobs(updatedJobs);
-      persistTrackerSnapshot(updatedJobs, calculateJobStats(updatedJobs));
-
-      toast.success("Status updated!");
-      fetchStats();
-    } catch (error) {
-      console.error("Error updating status:", error);
-      if (isNetworkError(error)) {
-        queueOfflineStatusChange(jobId, newStatus, previousJobs);
-      } else {
-        toast.error("Failed to update status", { id: `tracked-job-update-error-${jobId}` });
-      }
-    } finally {
-      setUpdateLoading((prev) => ({ ...prev, [jobId]: false }));
-    }
-  }, [trackedJobs, fetchStats, persistTrackerSnapshot, queueOfflineStatusChange]);
-
-  const onDragEnd = useCallback(async (result) => {
-    const { destination, source, draggableId } = result;
-
-    if (!destination) return;
-
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
-      return;
-    }
-
-    const newStatus = destination.droppableId;
-    const previousJobs = trackedJobs;
-    const updatedJobs = previousJobs.map((job) =>
-      job.id === draggableId
-        ? { ...job, status: newStatus, updatedAt: new Date().toISOString() }
-        : job
-    );
-    
-    // Optimistic UI update
-    const updatedStats = calculateJobStats(updatedJobs);
-    setTrackedJobs(updatedJobs);
-    setStats(updatedStats);
-    persistTrackerSnapshot(updatedJobs, updatedStats);
-
-    // Backend update
-    try {
-      await jobTrackerApi.updateStatus(draggableId, newStatus);
-      toast.success("Status updated!");
-      fetchStats();
-    } catch (error) {
-      console.error("Error updating status:", error);
-      if (isNetworkError(error)) {
-        queueOfflineStatusChange(draggableId, newStatus, previousJobs);
-      } else {
-        toast.error("Failed to update status");
-        const previousStats = calculateJobStats(previousJobs);
-        setTrackedJobs(previousJobs);
-        setStats(previousStats);
-        persistTrackerSnapshot(previousJobs, previousStats);
-      }
-    }
-  }, [trackedJobs, fetchStats, persistTrackerSnapshot, queueOfflineStatusChange]);
-
-  const handleDelete = useCallback(async (jobId) => {
-    if (
-      !window.confirm(
-        "Are you sure you want to remove this job from your tracker?"
-      )
-    ) {
-      return;
-    }
-
-    try {
-      await jobTrackerApi.delete(jobId);
-      const updatedJobs = trackedJobs.filter((job) => job.id !== jobId);
-      setTrackedJobs(updatedJobs);
-      persistTrackerSnapshot(updatedJobs, calculateJobStats(updatedJobs));
-      toast.success("Job removed from tracker");
-      fetchStats();
-    } catch (error) {
-      console.error("Error deleting job:", error);
-      toast.error("Failed to remove job", { id: `tracked-job-delete-error-${jobId}` });
-    }
-  }, [trackedJobs, fetchStats, persistTrackerSnapshot]);
-
-  const handleSaveNote = useCallback(async (jobId, noteContent) => {
-    const trimmed = noteContent.trim();
-    if (!trimmed) {
-      return false;
-    }
-    try {
-      const job = trackedJobs.find((j) => j.id === jobId);
-      if (!job) return false;
-      await jobTrackerApi.updateStatus(jobId, job.status, trimmed);
-      const newNote = { content: trimmed, createdAt: new Date().toISOString() };
-      const updatedJobs = trackedJobs.map((j) =>
-        j.id === jobId
-          ? { ...j, notes: [...(j.notes || []), newNote] }
-          : j
-      );
-      setTrackedJobs(updatedJobs);
-      persistTrackerSnapshot(updatedJobs, calculateJobStats(updatedJobs));
-      toast.success("Note saved!");
-      return true;
-    } catch (error) {
-      console.error("Error saving note:", error);
-      toast.error("Failed to save note");
-      return false;
-    }
-  }, [trackedJobs, persistTrackerSnapshot]);
-
+  // Event listeners for offline/online
   useEffect(() => {
-    if (initialJobs !== undefined) {
-      setTrackedJobs(initialJobs);
-      setStats(calculateJobStats(initialJobs));
-      setLoading(false);
-    } else {
-      fetchJobs();
-      fetchStats();
-    }
-  }, [fetchJobs, fetchStats, initialJobs]);
-
-  useEffect(() => {
-    const updateConnectionState = () => {
-      setIsOffline(!navigator.onLine);
-    };
+    const updateConnectionState = () => setIsOffline(!navigator.onLine);
 
     const handleOnline = async () => {
       setIsOffline(false);
       await syncPendingStatusUpdates();
-      await fetchJobs();
-      await fetchStats();
+      queryClient.invalidateQueries({ queryKey: ['trackedJobs', currentUserId] });
+      queryClient.invalidateQueries({ queryKey: ['jobStats', currentUserId] });
     };
 
-    const handleOffline = () => {
-      setIsOffline(true);
-    };
+    const handleOffline = () => setIsOffline(true);
 
     setPendingSyncCount(getQueuedStatusUpdates(currentUserId).length);
     window.addEventListener("online", handleOnline);
@@ -321,7 +292,7 @@ export function useJobBoard({ initialJobs, isControlled } = {}) {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
-  }, [currentUserId, fetchJobs, fetchStats, syncPendingStatusUpdates]);
+  }, [currentUserId, syncPendingStatusUpdates, queryClient]);
 
   return {
     trackedJobs,
