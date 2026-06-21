@@ -186,7 +186,7 @@ const Outreach = () => {
                         <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-red-900 mb-2">Generation Failed</h3>
                         <p className="text-red-700">{error}</p>
-                        <button 
+                        <button type="button" 
                             onClick={() => setStatus('idle')}
                             className="mt-4 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 font-medium transition-colors"
                         >

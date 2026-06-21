@@ -68,7 +68,7 @@ vi.mock("../ui/Sidebar", () => ({
   SidebarDivider: () => <hr />,
 
   SidebarLink: ({ link, onClick }) => (
-    <button onClick={onClick}>{link.label}</button>
+    <button type="button" onClick={onClick}>{link.label}</button>
   ),
 }));
 

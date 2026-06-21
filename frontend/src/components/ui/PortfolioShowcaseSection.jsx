@@ -103,7 +103,7 @@ export default function PortfolioShowcaseSection() {
           {/* Dot Indicators */}
           <div className="flex justify-center gap-2 mt-4">
             {carouselItems.map((_, index) => (
-              <button
+              <button type="button"
                 key={index}
                 onClick={() => setCurrentIndex(index)}
                 aria-label={`Go to slide ${index + 1}`}

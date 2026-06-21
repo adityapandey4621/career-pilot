@@ -50,7 +50,7 @@ export default function Settings() {
   }
 
   const Toggle = ({ value, onChange }) => (
-    <button
+    <button type="button"
       role="switch"
       aria-checked={value}
       onClick={() => onChange(!value)}
@@ -94,7 +94,7 @@ export default function Settings() {
           {/* Tab Navigation */}
           <div className="flex gap-1 p-1 rounded-xl bg-muted/50 border border-border mb-8 w-fit">
             {tabs.map(tab => (
-              <button
+              <button type="button"
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${

@@ -49,7 +49,7 @@ export function KanbanColumn({ status, columnJobs, handleDelete, setResearchComp
                                         <h4 className="font-bold text-foreground text-sm line-clamp-2 leading-tight pr-4">
                                           {job.title}
                                         </h4>
-                                        <button
+                                        <button type="button"
                                           onClick={() => handleDelete(job.id)}
                                           className="text-muted-foreground/50 hover:text-red-500 transition-colors absolute top-4 right-4"
                                           title="Remove Job"
@@ -89,7 +89,7 @@ export function KanbanColumn({ status, columnJobs, handleDelete, setResearchComp
                                             <ExternalLink className="w-3 h-3" /> Apply
                                           </a>
                                         )}
-                                        <button
+                                        <button type="button"
                                           onClick={() =>
                                             setResearchCompany({
                                               name: job.company,
@@ -101,7 +101,7 @@ export function KanbanColumn({ status, columnJobs, handleDelete, setResearchComp
                                           <Sparkles className="w-3 h-3" /> AI Research
                                         </button>
                                         {/* Notes toggle button */}
-                                        <button
+                                        <button type="button"
                                           onClick={(e) => {
                                             e.stopPropagation();
                                             if (noteEditing === job.id) {
@@ -181,7 +181,7 @@ export function KanbanColumn({ status, columnJobs, handleDelete, setResearchComp
                                               className="flex-1 text-[11px] bg-background border border-amber-500/30 focus:border-amber-500/60 rounded-lg px-2.5 py-1.5 text-foreground placeholder:text-muted-foreground/40 resize-none outline-none transition-colors"
                                             />
                                             <div className="flex flex-col gap-1">
-                                              <button
+                                              <button type="button"
                                                 onClick={() => {
                                                   handleSaveNote(job.id, noteText).then(() => {
                                                     setNoteEditing(null);
@@ -194,7 +194,7 @@ export function KanbanColumn({ status, columnJobs, handleDelete, setResearchComp
                                               >
                                                 <Send className="w-3 h-3" />
                                               </button>
-                                              <button
+                                              <button type="button"
                                                 onClick={() => { setNoteEditing(null); setNoteText(""); }}
                                                 title="Cancel"
                                                 className="p-1.5 bg-muted hover:bg-muted/80 text-muted-foreground rounded-lg transition-colors flex items-center justify-center"

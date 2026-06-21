@@ -53,7 +53,7 @@ const JobTracker = () => {
         <div className="flex flex-col gap-6">
           {/* Status Filters */}
           <div className="flex flex-wrap gap-2">
-            <button
+            <button type="button"
               onClick={() => setFilterStatus("all")}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filterStatus === "all"
@@ -64,7 +64,7 @@ const JobTracker = () => {
               All Columns
             </button>
             {statusOptions.map((status) => (
-              <button
+              <button type="button"
                 key={status.value}
                 onClick={() => setFilterStatus(status.value)}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${

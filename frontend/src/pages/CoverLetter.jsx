@@ -274,7 +274,7 @@ const CoverLetter = () => {
                   Resume extracted successfully
                 </p>
               </div>
-              <button
+              <button type="button"
                 onClick={() => {
                   setStep(1);
                   setResumeFile(null);
@@ -337,7 +337,7 @@ const CoverLetter = () => {
               </p>
               <div className="flex gap-3">
                 {TONES.map((t) => (
-                  <button
+                  <button type="button"
                     key={t}
                     onClick={() => setTone(t)}
                     className={`px-5 py-2 rounded-full text-sm font-medium capitalize transition-all duration-200 ${
@@ -354,7 +354,7 @@ const CoverLetter = () => {
 
             {error && <p className="text-red-400 text-sm px-1">{error}</p>}
 
-            <button
+            <button type="button"
               onClick={handleGenerate}
               disabled={loading}
               className="w-full py-4 rounded-2xl font-semibold text-white text-base transition-all duration-200 disabled:opacity-50"
@@ -385,19 +385,19 @@ const CoverLetter = () => {
                 Your Cover Letter
               </h2>
               <div className="flex gap-2">
-                <button
+                <button type="button"
                   onClick={() => setStep(2)}
                   className="px-4 py-2 text-sm rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white transition-all"
                 >
                   ← Edit
                 </button>
-                <button
+                <button type="button"
                   onClick={handleCopy}
                   className="px-4 py-2 text-sm rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all"
                 >
                   {copied ? "✓ Copied!" : "Copy"}
                 </button>
-                <button
+                <button type="button"
                   onClick={handleDownloadPDF}
                   className="px-4 py-2 text-sm rounded-xl font-medium text-white transition-all"
                   style={{
