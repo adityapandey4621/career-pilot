@@ -237,7 +237,7 @@ const InspiredDebasishDutta = () => {
                   <div key={idx} className="bg-[#333333] border border-gray-700/50 rounded-xl overflow-hidden hover:border-purple-500/50 transition-all flex flex-col md:flex-row group">
                     <div className="md:w-1/3 bg-gray-800 h-48 md:h-auto overflow-hidden relative">
                        {proj.image ? (
-                         <img src={proj.image} alt={proj.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                         <img src={proj.image} alt={proj.title || "Project Screenshot"} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                        ) : (
                          <div className="w-full h-full flex items-center justify-center bg-gray-800 text-gray-600">
                            <Layers className="w-12 h-12" />
