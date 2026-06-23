@@ -1,3 +1,10 @@
+## [1.265.1](https://github.com/anurag3407/career-pilot/compare/v1.265.0...v1.265.1) (2026-06-23)
+
+
+### Bug Fixes
+
+* package json infinite loop error ([232184a](https://github.com/anurag3407/career-pilot/commit/232184a4b8c8765b0fdfc9067fcaee0b99f893b9))
+
 # [1.1.0](https://github.com/Kaushal00Vaid/career-pilot/compare/v1.0.0...v1.1.0) (2026-06-23)
 
 
